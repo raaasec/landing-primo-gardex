@@ -1471,323 +1471,122 @@ section.uf-custom {
 .uf-custom-note { font-size: 14.5px !important; color: var(--secondary) !important; }
 
 /* Configurateur résumé */
-/* ===== Mini-configurateur ===== */
-.uf-configurator {
+/* ===== Visualiseur 3D garde-corps ===== */
+.gc-viewer {
+  max-width: 860px; margin: 0 auto;
   background: var(--bg-card); border: 1px solid var(--line-soft);
-  border-radius: var(--r-xl); padding: clamp(20px, 2.6vw, 28px);
+  border-radius: var(--r-xl); padding: clamp(16px, 2.4vw, 26px);
   box-shadow: var(--shadow-md);
-  /* variables pilotées par le JS (valeurs par défaut) */
-  --uf-panel-color: #2f3436;
-  --uf-panel-h: 140px;
-  --uf-len-w: 80%;
-  --uf-hole: rgba(245, 242, 236, 0.82);
-}
-.uf-cfg-head { margin-bottom: 16px; }
-.uf-cfg-brand {
-  display: inline-flex; align-items: center; gap: 9px;
-  font-family: var(--sans); font-size: 12px; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent);
-}
-.uf-cfg-mark { width: 22px; height: 22px; display: inline-flex; color: var(--accent); flex-shrink: 0; }
-.uf-cfg-mark svg { width: 100%; height: 100%; }
-.uf-cfg-mark svg rect { fill: none; stroke: currentColor; stroke-width: 1.6; }
-.uf-cfg-mark svg circle { fill: currentColor; }
-.uf-cfg-mark--light { color: var(--brand-100); }
-.uf-cfg-title {
-  display: block; margin-top: 10px;
-  font-family: var(--serif); font-weight: 700; font-size: clamp(18px, 1.9vw, 22px);
-  line-height: 1.2; color: var(--ink); letter-spacing: -0.01em;
-}
-.uf-cfg-intro {
-  margin: 8px 0 0; font-size: 13.5px; line-height: 1.5; color: var(--text);
 }
 
-/* Corps : 2 colonnes (aperçu sticky à gauche, contrôles à droite) */
-.uf-cfg-body { display: grid; grid-template-columns: 1fr; gap: 26px; }
-.uf-cfg-left { display: flex; flex-direction: column; gap: 16px; }
-.uf-cfg-right { display: flex; flex-direction: column; gap: 22px; }
-@media (min-width: 860px) {
-  .uf-cfg-body { grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr); gap: 34px; align-items: start; }
-  .uf-cfg-left { position: sticky; top: 90px; }
+/* Scène 3D : le canvas s'y insère et remplit la zone */
+.gc-stage {
+  position: relative; width: 100%;
+  aspect-ratio: 16 / 11; max-height: 62vh;
+  border-radius: var(--r-lg, 16px); overflow: hidden;
+  background: var(--cream);
+  border: 1px solid var(--line-soft);
+}
+.gc-canvas {
+  display: block; width: 100% !important; height: 100% !important;
+  /* Doigt : vertical = scroll page, horizontal = rotation du modèle */
+  touch-action: pan-y;
+  cursor: grab;
+}
+.gc-canvas:active { cursor: grabbing; }
+
+/* Repli si WebGL indisponible (image statique du motif) */
+.gc-fallback {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; display: block;
 }
 
-/* A. Aperçu visuel */
-.uf-cfg-preview { margin: 0; }
-.uf-cfg-stage {
-  position: relative; height: 230px; border-radius: var(--r-md);
-  overflow: hidden; border: 1px solid var(--line-soft);
-  background: linear-gradient(180deg, #eef1ee 0%, #e3e7e2 64%, #dfe2dc 100%);
+/* État de chargement */
+.gc-loading {
+  position: absolute; inset: 0; display: flex;
+  align-items: center; justify-content: center;
+  font-size: 14px; color: var(--secondary);
+  background: var(--cream); z-index: 2;
 }
-.uf-cfg-sky { position: absolute; inset: 0; z-index: 0;
-  background: radial-gradient(120% 80% at 50% 0%, rgba(255,255,255,0.6), transparent 60%); }
-.uf-cfg-ground { position: absolute; left: 0; right: 0; bottom: 0; height: 14px; z-index: 0;
-  background: linear-gradient(180deg, #cdc8bb, #bdb7a8); }
-.uf-cfg-base { position: absolute; left: 0; right: 0; bottom: 0; height: 0; z-index: 1;
-  transition: height .22s var(--ease-out), background .22s var(--ease-out); }
-.uf-cfg-fence {
-  position: absolute; left: 50%; transform: translateX(-50%); bottom: 20px;
-  width: var(--uf-len-w, 78%); height: var(--uf-panel-h); z-index: 2;
-  display: flex; align-items: flex-end; justify-content: center; gap: 7px;
-  transition: height .22s var(--ease-out), bottom .22s var(--ease-out), width .22s var(--ease-out);
+.gc-loading::before {
+  content: ''; width: 16px; height: 16px; margin-right: 10px;
+  border: 2px solid var(--line-strong, #cbc7bd);
+  border-top-color: var(--gold, #E4A52D); border-radius: 50%;
+  animation: gc-spin 0.8s linear infinite;
 }
-.uf-cfg-post {
-  position: relative; flex: 0 0 7px; align-self: stretch; z-index: 1;
-  height: calc(100% + 8px); margin-bottom: -4px;
-  background: linear-gradient(90deg, #50555800, #3a3e40 35%, #50565a 60%, #2f3335);
-  border-radius: 2px;
-  transition: height .22s var(--ease-out), margin-bottom .22s var(--ease-out);
-}
-.uf-cfg-panel {
-  flex: 1 1 0; min-width: 34px; align-self: stretch; height: 100%;
-  border-radius: 2px; background-color: var(--uf-panel-color);
-  background-position: center; background-repeat: repeat;
-  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.18), 0 1px 4px rgba(0,0,0,0.12);
-  transition: background-color .22s var(--ease-out);
+@keyframes gc-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .gc-loading::before { animation: none; }
 }
 
-/* Poses — chaque pose a une base visuelle clairement distincte */
-/* Sur muret : muret pierre/enduit haut, ombré, poteaux posés sur le dessus */
-.uf-configurator[data-implantation="muret"] .uf-cfg-base {
-  height: 34px;
-  background: linear-gradient(180deg, #e6e0d3 0%, #d3cbbc 55%, #c0b7a6 100%);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), 0 -2px 7px rgba(0,0,0,0.10);
-}
-.uf-configurator[data-implantation="muret"] .uf-cfg-base::before {
-  content: ''; position: absolute; inset: 0; opacity: 0.55;
-  background-image:
-    linear-gradient(90deg, rgba(120,108,90,0.40) 1px, transparent 1px),
-    linear-gradient(0deg, rgba(120,108,90,0.32) 1px, transparent 1px);
-  background-size: 36px 17px, 36px 17px; background-position: 0 0, 0 8px;
-}
-.uf-configurator[data-implantation="muret"] .uf-cfg-fence { bottom: 32px; }
-
-/* Sur longrine béton : base basse, uniforme, grise, industrielle */
-.uf-configurator[data-implantation="beton"] .uf-cfg-base {
-  height: 16px;
-  background: linear-gradient(180deg, #c6c8c5 0%, #abaeab 60%, #989b98 100%);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), inset 0 -1px 0 rgba(0,0,0,0.10);
-}
-.uf-configurator[data-implantation="beton"] .uf-cfg-fence { bottom: 14px; }
-
-/* Sur platines : pas de socle, poteaux jusqu'au sol + platines visibles */
-.uf-configurator[data-implantation="platines"] .uf-cfg-base { height: 0; }
-.uf-configurator[data-implantation="platines"] .uf-cfg-fence { bottom: 13px; }
-.uf-configurator[data-implantation="platines"] .uf-cfg-post {
-  height: calc(100% + 13px); margin-bottom: -9px;
-}
-.uf-configurator[data-implantation="platines"] .uf-cfg-post::after {
-  content: ''; position: absolute; bottom: -9px; left: -6px; right: -6px; height: 6px;
-  background:
-    radial-gradient(circle at 28% 50%, rgba(255,255,255,0.65) 0.8px, transparent 1.3px),
-    radial-gradient(circle at 72% 50%, rgba(255,255,255,0.65) 0.8px, transparent 1.3px),
-    linear-gradient(180deg, #3a3e40, #26292a);
-  border-radius: 1px; box-shadow: 0 1px 2px rgba(0,0,0,0.25);
+/* Indice « faites glisser » */
+.gc-hint {
+  position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%);
+  padding: 5px 12px; border-radius: 999px;
+  background: rgba(26, 26, 26, 0.72); color: #fff;
+  font-size: 12px; letter-spacing: 0.01em; pointer-events: none;
+  z-index: 2;
 }
 
-/* Étiquette de pose dans l'aperçu */
-.uf-cfg-pose-tag {
-  position: absolute; left: 10px; bottom: 9px; z-index: 3;
-  font-family: var(--sans); font-size: 9.5px; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.06em;
-  color: #fff; background: rgba(22,25,26,0.58);
-  padding: 3px 9px; border-radius: var(--r-pill);
+/* Boutons de motif */
+.gc-motifs {
+  display: flex; flex-wrap: wrap; gap: 10px;
+  justify-content: center; margin: 18px 0 6px;
+}
+.gc-motif {
+  display: inline-flex; align-items: center; gap: 10px;
+  min-height: 44px; padding: 6px 14px 6px 6px;
+  background: var(--bg-card); color: var(--ink);
+  border: 1.5px solid var(--line-soft); border-radius: 999px;
+  font-family: inherit; font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: border-color .18s, background .18s, box-shadow .18s;
+}
+.gc-motif:hover { border-color: var(--brand-100); box-shadow: var(--shadow-sm); }
+.gc-motif:focus-visible { outline: 2px solid var(--gold-deep); outline-offset: 2px; }
+.gc-motif-thumb {
+  width: 34px; height: 34px; border-radius: 50%;
+  background-size: cover; background-position: center;
+  border: 1px solid rgba(0, 0, 0, 0.12); flex: 0 0 auto;
+}
+.gc-motif-name { padding-right: 4px; }
+
+/* Motif actif : fond OR + texte NOIR (jamais blanc sur or) */
+.gc-motif[aria-pressed="true"] {
+  background: var(--gold); border-color: var(--gold-deep);
+  color: var(--ink-800);
+}
+.gc-motif[aria-pressed="true"] .gc-motif-thumb {
+  border-color: rgba(26, 26, 26, 0.35);
 }
 
-.uf-cfg-disclaimer {
-  display: block; margin-top: 10px; text-align: center;
-  font-size: 11px; font-style: normal; color: var(--ink-300);
+/* Boutons désactivés (repli sans WebGL) */
+.gc-motif:disabled {
+  opacity: 0.45; cursor: not-allowed; box-shadow: none;
 }
-/* Cote de longueur illustrative (alignée sur la largeur de la clôture) */
-.uf-cfg-cote { margin-top: 12px; display: flex; justify-content: center; }
-.uf-cfg-cote-bar {
-  position: relative; height: 18px;
-  width: var(--uf-len-w, 78%); max-width: 100%;
-  display: flex; align-items: center; justify-content: center;
-  transition: width .22s var(--ease-out);
+.gc-motif:disabled:hover { border-color: var(--line-soft); }
+
+/* Bouton d'action unique */
+.gc-cta {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: 100%; max-width: 420px; margin: 16px auto 0;
+  min-height: 52px; padding: 14px 26px;
+  background: var(--ink-800); color: #fff;
+  border-radius: 999px; text-decoration: none;
+  font-weight: 600; font-size: 16px; letter-spacing: 0.01em;
+  transition: transform .18s, box-shadow .18s, background .18s;
 }
-.uf-cfg-cote-bar::before {
-  content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 1px;
-  background: var(--ink-200);
-}
-.uf-cfg-cote-bar::after {
-  content: ''; position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%);
-  height: 9px; border-left: 1px solid var(--ink-300); border-right: 1px solid var(--ink-300);
-}
-.uf-cfg-cote-val {
-  position: relative; z-index: 1; background: var(--bg-card);
-  padding: 0 8px; font-size: 11px; font-weight: 600; color: var(--ink-500);
-  letter-spacing: 0.02em;
+.gc-cta:hover { background: #000; box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.gc-cta:focus-visible { outline: 2px solid var(--gold-deep); outline-offset: 3px; }
+.gc-cta .arrow { transition: transform .18s; }
+.gc-cta:hover .arrow { transform: translateX(4px); }
+@media (prefers-reduced-motion: reduce) {
+  .gc-cta:hover { transform: none; }
+  .gc-cta:hover .arrow { transform: none; }
 }
 
-/* Motifs de perforation — 3 dessins réellement différents, ronds et premium */
-.uf-configurator[data-pattern="privacy"] .uf-cfg-panel,
-.uf-motif--privacy {
-  /* Très occultant : micro-perforations rondes espacées, beaucoup de tôle pleine */
-  background-image: radial-gradient(circle, var(--uf-hole) 1.3px, transparent 1.9px);
-  background-size: 11px 11px;
-}
-.uf-configurator[data-pattern="balanced"] .uf-cfg-panel,
-.uf-motif--balanced {
-  /* Intermédiaire : perforations moyennes en quinconce, rythme harmonieux */
-  background-image:
-    radial-gradient(circle, var(--uf-hole) 2.1px, transparent 2.8px),
-    radial-gradient(circle, var(--uf-hole) 2.1px, transparent 2.8px);
-  background-size: 14px 14px;
-  background-position: 0 0, 7px 7px;
-}
-.uf-configurator[data-pattern="open"] .uf-cfg-panel,
-.uf-motif--open {
-  /* Plus ouvert : grandes perforations rondes en quinconce (effet galets/moucharabieh) */
-  background-image:
-    radial-gradient(circle, var(--uf-hole) 3.6px, transparent 4.4px),
-    radial-gradient(circle, var(--uf-hole) 2.3px, transparent 3px);
-  background-size: 22px 22px, 22px 22px;
-  background-position: 0 0, 11px 11px;
-}
-
-/* B. Contrôles (colonne droite) */
-.uf-cfg-field { display: flex; flex-direction: column; gap: 9px; }
-.uf-cfg-sublabel {
-  font-family: var(--sans); font-size: 12.5px; font-weight: 600;
-  letter-spacing: 0.02em; color: var(--ink);
-  display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
-}
-.uf-cfg-sublabel output { font-weight: 600; color: var(--accent); font-size: 13px; text-align: right; }
-.uf-cfg-hint { font-size: 11.5px; line-height: 1.45; color: var(--secondary); margin: -2px 0 0; }
-.uf-cfg-note { font-size: 11px; line-height: 1.45; font-style: normal; color: var(--ink-300); margin: 2px 0 0; }
-
-/* Sliders premium */
-.uf-cfg-range {
-  -webkit-appearance: none; appearance: none;
-  width: 100%; height: 4px; margin: 6px 0 2px; cursor: pointer; outline: none;
-  background: var(--line); border-radius: 999px;
-  background-image: linear-gradient(var(--accent), var(--accent));
-  background-repeat: no-repeat; background-size: var(--uf-fill, 50%) 100%;
-}
-.uf-cfg-range::-webkit-slider-thumb {
-  -webkit-appearance: none; appearance: none;
-  width: 18px; height: 18px; border-radius: 50%;
-  background: var(--accent); border: 3px solid var(--bg-card);
-  box-shadow: 0 2px 8px rgba(196, 136, 27, 0.35); cursor: grab;
-}
-.uf-cfg-range::-moz-range-thumb {
-  width: 18px; height: 18px; border-radius: 50%;
-  background: var(--accent); border: 3px solid var(--bg-card);
-  box-shadow: 0 2px 8px rgba(196, 136, 27, 0.35); cursor: grab;
-}
-.uf-cfg-range:focus-visible { box-shadow: 0 0 0 3px rgba(196, 136, 27,0.22); }
-
-/* Poses (cartes avec icône) */
-.uf-cfg-poses { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.uf-cfg-pose {
-  display: flex; flex-direction: column; align-items: center; gap: 7px; text-align: center;
-  padding: 12px 8px; border-radius: var(--r-md);
-  background: var(--bg-soft); border: 1px solid var(--line); color: var(--ink-700);
-  cursor: pointer; transition: border-color .2s var(--ease-out), box-shadow .2s var(--ease-out), background .2s var(--ease-out), color .2s var(--ease-out);
-}
-.uf-cfg-pose-ico { width: 36px; height: 28px; color: var(--ink-500); transition: color .2s var(--ease-out); }
-.uf-cfg-pose-ico svg { width: 100%; height: 100%; display: block; }
-.uf-cfg-pose-name { font-family: var(--sans); font-size: 11.5px; font-weight: 600; line-height: 1.25; }
-.uf-cfg-pose:hover { border-color: var(--brand-100); color: var(--ink); }
-.uf-cfg-pose[aria-pressed="true"] {
-  border-color: var(--accent); background: var(--bg-card); color: var(--ink);
-  box-shadow: 0 6px 16px rgba(196, 136, 27, 0.14), inset 0 0 0 1px var(--accent);
-}
-.uf-cfg-pose[aria-pressed="true"] .uf-cfg-pose-ico { color: var(--accent); }
-.uf-cfg-pose:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-
-/* Cartes motifs — 3 niveaux d'occultation réels (le niveau dépend du dessin) */
-.uf-cfg-motifs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-.uf-cfg-motif {
-  display: flex; flex-direction: column; gap: 7px; text-align: left;
-  padding: 10px; cursor: pointer;
-  background: var(--bg-soft); border: 1px solid var(--line); border-radius: var(--r-md);
-  transition: border-color .2s var(--ease-out), box-shadow .2s var(--ease-out);
-}
-.uf-cfg-motif:hover { border-color: var(--brand-100); }
-.uf-cfg-motif[aria-pressed="true"] {
-  border-color: var(--accent); background: var(--bg-card);
-  box-shadow: 0 8px 20px rgba(196, 136, 27, 0.14), inset 0 0 0 1px var(--accent);
-}
-.uf-cfg-motif:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.uf-cfg-motif-swatch {
-  display: block; height: 50px; border-radius: var(--r-xs);
-  background-color: #2f3436; background-position: center;
-  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.18);
-  --uf-hole: rgba(245, 242, 236, 0.82);
-}
-.uf-cfg-motif-name { font-family: var(--sans); font-size: 12.5px; font-weight: 700; color: var(--ink); line-height: 1.2; }
-.uf-cfg-motif-level {
-  display: inline-block; align-self: flex-start;
-  font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
-  color: var(--accent); background: rgba(196, 136, 27, 0.10);
-  padding: 3px 7px; border-radius: var(--r-pill);
-}
-
-/* CTA secondaire */
-.uf-cfg-cta { width: 100%; justify-content: center; margin-top: 4px; }
-.uf-cfg-cta-sub {
-  display: block; margin-top: 9px; text-align: center;
-  font-size: 11.5px; line-height: 1.4; color: var(--ink-300);
-}
-
-/* Résumé compact (sous l'aperçu, colonne gauche) */
-.uf-cfg-chips { display: flex; flex-wrap: wrap; gap: 7px; }
-.uf-cfg-chip {
-  display: inline-flex; align-items: center;
-  font-family: var(--sans); font-size: 11.5px; font-weight: 600; color: var(--ink);
-  padding: 5px 11px; border-radius: var(--r-pill);
-  background: var(--bg-soft); border: 1px solid var(--line);
-}
-.uf-cfg-chip--color::before {
-  content: ''; width: 11px; height: 11px; border-radius: 50%; margin-right: 7px;
-  background: var(--sw, var(--uf-panel-color)); border: 1px solid rgba(0,0,0,0.2);
-}
-
-/* Finition (nuancier au plus près de l'aperçu) */
-.uf-cfg-finish { display: flex; flex-direction: column; gap: 9px; }
-.uf-cfg-swatches { display: flex; flex-wrap: wrap; gap: 12px; }
-.uf-cfg-swatch {
-  width: 32px; height: 32px; border-radius: 50%; cursor: pointer; padding: 0;
-  background: var(--sw, #999); border: 1px solid rgba(0,0,0,0.16);
-  position: relative; transition: transform .18s var(--ease-out);
-}
-.uf-cfg-swatch:hover { transform: scale(1.12); }
-.uf-cfg-swatch[aria-pressed="true"] {
-  box-shadow: 0 0 0 2px var(--bg-card), 0 0 0 4px var(--accent);
-}
-.uf-cfg-swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-
-@media (max-width: 380px) {
-  .uf-cfg-poses { gap: 6px; }
-  .uf-cfg-pose { padding: 10px 5px; }
-  .uf-cfg-motifs { gap: 7px; }
-}
-
-/* Bande process */
-.uf-flow {
-  list-style: none; margin: clamp(40px, 5vw, 60px) 0 0; padding: 0;
-  display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
-  gap: 10px 14px;
-}
-.uf-flow-step {
-  display: inline-flex; align-items: center;
-  background: var(--bg-card); border: 1px solid var(--line);
-  border-radius: var(--r-pill); padding: 11px 22px;
-  font-family: var(--sans); font-size: 14px; font-weight: 600;
-  color: var(--ink-700); letter-spacing: 0.01em; position: relative;
-}
-.uf-flow-step:nth-child(4) { background: var(--accent); border-color: var(--accent); color: #fff; }
-.uf-flow-step:not(:last-child)::after {
-  content: '→'; position: absolute; right: -16px; top: 50%; transform: translateY(-50%);
-  color: var(--ink-300); font-weight: 400; font-size: 13px;
-}
 @media (max-width: 560px) {
-  .uf-flow { flex-direction: column; align-items: stretch; gap: 22px 0; }
-  .uf-flow-step { justify-content: center; }
-  .uf-flow-step:not(:last-child)::after {
-    content: '↓'; right: auto; left: 50%; top: auto; bottom: -18px; transform: translateX(-50%);
-  }
+  .gc-stage { aspect-ratio: 4 / 3; }
+  .gc-motif { font-size: 13.5px; }
 }
 
 /* Section motifs dédiée */

@@ -317,154 +317,54 @@
   </div>
 </section>
 
-<!-- ============== CONFIGURATEUR (sur mesure) ============== -->
+<!-- ============== VISUALISEUR 3D (sur mesure) ============== -->
 <section class="uf-custom section-screen" id="sur-mesure">
   <div class="container">
-    <!-- Discours court -->
+    <!-- Intro courte -->
     <div class="uf-custom-intro reveal">
       <span class="eyebrow">Sur mesure</span>
-      <h2>Configurez votre garde-corps, <em>nous le fabriquons.</em></h2>
-      <p>Longueur, hauteur, pose, remplissage et teinte RAL&nbsp;: une configuration indicative avant de lancer un vrai projet.</p>
+      <h2>Visualisez votre garde-corps <em>en 3D.</em></h2>
+      <p>Faites tourner le modèle et essayez les motifs de remplissage. Vos dimensions se règlent ensuite dans le configurateur.</p>
     </div>
 
-    <!-- Mini-configurateur interactif (démonstratif) -->
-    <div class="uf-configurator reveal" id="ufConfigurator"
-         data-length="6" data-height="1000" data-implantation="platines"
-         data-pattern="privacy" data-color="anthracite">
+    <!-- Visualiseur 3D interactif -->
+    <div class="gc-viewer reveal" id="gcViewer">
 
-      <div class="uf-cfg-head">
-        <span class="uf-cfg-brand">
-          <span class="uf-cfg-mark" aria-hidden="true">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <rect x="2.5" y="2.5" width="19" height="19" rx="5"></rect>
-              <circle cx="8" cy="8" r="1.3"></circle><circle cx="12" cy="8" r="1.3"></circle><circle cx="16" cy="8" r="1.3"></circle>
-              <circle cx="8" cy="12" r="1.3"></circle><circle cx="12" cy="12" r="1.3"></circle><circle cx="16" cy="12" r="1.3"></circle>
-              <circle cx="8" cy="16" r="1.3"></circle><circle cx="12" cy="16" r="1.3"></circle><circle cx="16" cy="16" r="1.3"></circle>
-            </svg>
-          </span>
-          Configurateur Primo Gardex
-        </span>
-        <span class="uf-cfg-title">Visualisez le sur-mesure</span>
-        <p class="uf-cfg-intro">Longueur, hauteur, pose, remplissage, teinte&nbsp;: un aperçu indicatif avant projet.</p>
+      <div class="gc-stage" id="gcStage" role="img"
+           aria-label="Modèle 3D d'un garde-corps anthracite à panneaux ajourés, posé sur une base béton. Faites glisser pour le faire tourner.">
+        <div class="gc-loading" id="gcLoading">Chargement du modèle 3D…</div>
+        <img class="gc-fallback" id="gcFallback" hidden
+             src="Motifs/SPM20033-ATLANTIDE-par-Dampere.jpg"
+             alt="Motif de remplissage ajouré Atlantide, pour garde-corps anthracite Primo Gardex.">
+        <span class="gc-hint" id="gcHint" aria-hidden="true">Faites glisser pour tourner</span>
       </div>
 
-      <div class="uf-cfg-body">
-
-        <!-- Colonne gauche — aperçu sticky + finition -->
-        <div class="uf-cfg-left">
-          <div class="uf-cfg-preview">
-            <div class="uf-cfg-stage" id="ufStage" aria-hidden="true">
-              <div class="uf-cfg-sky"></div>
-              <div class="uf-cfg-fence" id="ufFence"></div>
-              <div class="uf-cfg-base" id="ufBase"></div>
-              <div class="uf-cfg-ground"></div>
-              <span class="uf-cfg-pose-tag" id="ufPoseTag">sur platines</span>
-            </div>
-            <!-- Cote de longueur (illustrative) -->
-            <div class="uf-cfg-cote" aria-hidden="true">
-              <span class="uf-cfg-cote-bar" id="ufCoteBar"><span class="uf-cfg-cote-val" id="ufCoteVal">6 ml</span></span>
-            </div>
-            <span class="uf-cfg-disclaimer">Vue indicative — dimensions finales au projet.</span>
-          </div>
-
-          <!-- Résumé compact -->
-          <div class="uf-cfg-chips" aria-live="polite">
-            <span class="uf-cfg-chip" id="ufChipLen">6 ml</span>
-            <span class="uf-cfg-chip" id="ufChipHeight">1 000 mm</span>
-            <span class="uf-cfg-chip" id="ufChipImpl">Sur platines</span>
-            <span class="uf-cfg-chip" id="ufChipPattern">Occultant</span>
-            <span class="uf-cfg-chip uf-cfg-chip--color" id="ufChipColor">Anthracite</span>
-          </div>
-
-          <!-- Finition (teintes RAL au plus près de l'aperçu) -->
-          <div class="uf-cfg-finish">
-            <span class="uf-cfg-sublabel" id="ufColorLabel">Finition <output id="ufColorOut">Anthracite</output></span>
-            <div class="uf-cfg-swatches" role="group" aria-labelledby="ufColorLabel" data-control="color" id="ufSwatches"></div>
-            <p class="uf-cfg-note">Exemples de teintes RAL — autres finitions possibles selon projet.</p>
-          </div>
-        </div>
-
-        <!-- Colonne droite — contrôles -->
-        <div class="uf-cfg-right">
-
-          <div class="uf-cfg-field">
-            <label class="uf-cfg-sublabel" for="ufLength">Longueur <output id="ufLengthOut" for="ufLength">6 ml</output></label>
-            <input class="uf-cfg-range" type="range" id="ufLength" min="2" max="12" step="1" value="6">
-          </div>
-
-          <div class="uf-cfg-field">
-            <label class="uf-cfg-sublabel" for="ufHeight">Hauteur (main courante) <output id="ufHeightOut" for="ufHeight">1 000 mm</output></label>
-            <input class="uf-cfg-range" type="range" id="ufHeight" min="900" max="1200" step="50" value="1000">
-            <p class="uf-cfg-hint">≈ 1 m pour une main courante standard, option rehausse au-delà.</p>
-          </div>
-
-          <div class="uf-cfg-field">
-            <span class="uf-cfg-sublabel" id="ufImplLabel">Pose</span>
-            <div class="uf-cfg-poses" role="group" aria-labelledby="ufImplLabel" data-control="implantation">
-              <button type="button" class="uf-cfg-pose" data-value="platines" aria-pressed="true">
-                <span class="uf-cfg-pose-ico" aria-hidden="true">
-                  <svg viewBox="0 0 36 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
-                    <rect x="9" y="3" width="18" height="15" rx="1"></rect>
-                    <path d="M11 18v5 M25 18v5"></path>
-                    <rect x="6" y="23" width="10" height="3" rx="1" fill="currentColor" stroke="none"></rect>
-                    <rect x="20" y="23" width="10" height="3" rx="1" fill="currentColor" stroke="none"></rect>
-                  </svg>
-                </span>
-                <span class="uf-cfg-pose-name">Sur platines (dalle / balcon)</span>
-              </button>
-              <button type="button" class="uf-cfg-pose" data-value="beton" aria-pressed="false">
-                <span class="uf-cfg-pose-ico" aria-hidden="true">
-                  <svg viewBox="0 0 36 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
-                    <rect x="7" y="3" width="22" height="14" rx="1"></rect>
-                    <rect x="3" y="20" width="30" height="4" rx="1" fill="currentColor" fill-opacity="0.28" stroke="none"></rect>
-                  </svg>
-                </span>
-                <span class="uf-cfg-pose-name">Scellement (dans la dalle)</span>
-              </button>
-              <button type="button" class="uf-cfg-pose" data-value="muret" aria-pressed="false">
-                <span class="uf-cfg-pose-ico" aria-hidden="true">
-                  <svg viewBox="0 0 36 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
-                    <rect x="7" y="3" width="22" height="12" rx="1"></rect>
-                    <rect x="4" y="17" width="28" height="8" rx="1" fill="currentColor" fill-opacity="0.16" stroke="none"></rect>
-                    <path d="M4 21h28 M12 17v8 M20 17v8 M28 17v8"></path>
-                  </svg>
-                </span>
-                <span class="uf-cfg-pose-name">Sur muret / acrotère</span>
-              </button>
-            </div>
-          </div>
-
-          <div class="uf-cfg-field">
-            <span class="uf-cfg-sublabel" id="ufPatternLabel">Remplissage</span>
-            <p class="uf-cfg-hint">Le niveau d'ajourage dépend du motif choisi.</p>
-            <div class="uf-cfg-motifs" role="group" aria-labelledby="ufPatternLabel" data-control="pattern">
-              <button type="button" class="uf-cfg-motif" data-value="privacy" aria-pressed="true">
-                <span class="uf-cfg-motif-swatch uf-motif--privacy" aria-hidden="true"></span>
-                <span class="uf-cfg-motif-name">Occultant</span>
-                <span class="uf-cfg-motif-level">Dense</span>
-              </button>
-              <button type="button" class="uf-cfg-motif" data-value="balanced" aria-pressed="false">
-                <span class="uf-cfg-motif-swatch uf-motif--balanced" aria-hidden="true"></span>
-                <span class="uf-cfg-motif-name">Semi-ajouré</span>
-                <span class="uf-cfg-motif-level">Intermédiaire</span>
-              </button>
-              <button type="button" class="uf-cfg-motif" data-value="open" aria-pressed="false">
-                <span class="uf-cfg-motif-swatch uf-motif--open" aria-hidden="true"></span>
-                <span class="uf-cfg-motif-name">Ajouré</span>
-                <span class="uf-cfg-motif-level">Plus ouvert</span>
-              </button>
-            </div>
-            <p class="uf-cfg-note">Remplissages indicatifs — choix final selon la gamme et le projet.</p>
-          </div>
-
-          <div class="uf-cfg-cta-row">
-            <a class="btn btn-primary uf-cfg-cta" href="https://primo-gardex.com/configurateur/" target="_blank" rel="noopener">
-              Configurer un vrai projet <span class="arrow">→</span>
-            </a>
-          </div>
-          <span class="uf-cfg-cta-sub">Le configurateur complet permet de renseigner vos cotes précises et de lancer la fabrication.</span>
-        </div>
+      <!-- Choix du motif (seul contrôle de la page) -->
+      <div class="gc-motifs" role="group" aria-label="Choix du motif de remplissage" id="gcMotifs">
+        <button type="button" class="gc-motif" aria-pressed="true"
+                data-src="Motifs/SPM20033-ATLANTIDE-par-Dampere.jpg">
+          <span class="gc-motif-thumb" aria-hidden="true"
+                style="background-image:url('Motifs/SPM20033-ATLANTIDE-par-Dampere.jpg')"></span>
+          <span class="gc-motif-name">Atlantide</span>
+        </button>
+        <button type="button" class="gc-motif" aria-pressed="false"
+                data-src="Motifs/SPM20045-ARETHUSA-par-Dampere.jpg">
+          <span class="gc-motif-thumb" aria-hidden="true"
+                style="background-image:url('Motifs/SPM20045-ARETHUSA-par-Dampere.jpg')"></span>
+          <span class="gc-motif-name">Aréthusa</span>
+        </button>
+        <button type="button" class="gc-motif" aria-pressed="false"
+                data-src="Motifs/SPM20090-LANIXIT-par-Dampere.jpg">
+          <span class="gc-motif-thumb" aria-hidden="true"
+                style="background-image:url('Motifs/SPM20090-LANIXIT-par-Dampere.jpg')"></span>
+          <span class="gc-motif-name">Lanixit</span>
+        </button>
       </div>
+
+      <!-- Bouton d'action unique -->
+      <a class="gc-cta" href="https://primo-gardex.com/configurateur/" target="_blank" rel="noopener">
+        Configurer selon mes dimensions <span class="arrow" aria-hidden="true">→</span>
+      </a>
     </div>
 
   </div>
@@ -924,6 +824,17 @@
 
 <!-- Script du projet (animations & interactions) -->
 <script src="js/script.js"></script>
+
+<!-- Three.js (CDN) pour le visualiseur 3D — aucune autre librairie -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module" src="js/viewer3d.js"></script>
 
 </body>
 </html>
