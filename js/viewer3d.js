@@ -276,27 +276,6 @@ function initViewer(root) {
     kS.castShadow = true; group.add(kS);
   }
 
-  // FAÇADE D'IMMEUBLE au fond (contexte architectural) + baie vitrée : lève l'ambiguïté « balcon »
-  const wallZ = frontZ - SPANZ - 0.06;
-  const WALL_H = 1.95;
-  const wallMat = new THREE.MeshStandardMaterial({ color: 0xece9e2, roughness: 0.97, metalness: 0.0 });
-  const wall = new THREE.Mesh(new THREE.BoxGeometry(SPANX + 0.5, WALL_H, 0.12), wallMat);
-  wall.position.set(0, WALL_H / 2 - SLAB_H, wallZ);
-  wall.receiveShadow = true; wall.castShadow = true;
-  group.add(wall);
-  // Baie vitrée sombre encastrée + cadre
-  const bayW = SPANX * 0.52, bayH = WALL_H * 0.8;
-  const bayFrame = new THREE.Mesh(new THREE.BoxGeometry(bayW + 0.07, bayH + 0.07, 0.05), metalMat);
-  bayFrame.position.set(0, bayH / 2, wallZ + 0.05);
-  group.add(bayFrame);
-  const glassMat = new THREE.MeshStandardMaterial({ color: 0x9fb1bd, roughness: 0.1, metalness: 0.65, emissive: 0x2a3540, emissiveIntensity: 0.25 });
-  const bay = new THREE.Mesh(new THREE.PlaneGeometry(bayW, bayH), glassMat);
-  bay.position.set(0, bayH / 2, wallZ + 0.078);
-  group.add(bay);
-  const mullion = new THREE.Mesh(new THREE.BoxGeometry(0.04, bayH, 0.03), metalMat);
-  mullion.position.set(0, bayH / 2, wallZ + 0.085);
-  group.add(mullion);
-
   // Applique une texture de motif à tous les panneaux (façade + retours)
   function applyMotif(tex) {
     const ratio = panelW / panelH;     // garde des cellules ~carrées

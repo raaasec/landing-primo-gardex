@@ -319,7 +319,7 @@ section.hero {
 .hero-invite {
   display: inline-flex; align-items: center; gap: 9px;
   padding: 7px 15px 7px 12px;
-  margin-bottom: 22px;
+  margin-bottom: 18px;
   border: 1px solid var(--brand-100);
   border-radius: 999px;
   background: var(--brand-50);
@@ -337,15 +337,15 @@ section.hero {
 }
 .hero-display {
   font-family: var(--serif);
-  font-size: clamp(44px, 6.2vw, 80px);
-  line-height: 1.02;
-  letter-spacing: -0.03em;
+  font-size: clamp(38px, 5vw, 64px);
+  line-height: 1.06;
+  letter-spacing: -0.025em;
   font-weight: 800;
   color: var(--ink);
-  margin: 0 0 28px;
+  margin: 0 0 22px;
   text-wrap: balance;
   display: flex; flex-direction: column;
-  gap: 14px;
+  gap: 6px;
 }
 .hero-display .line { display: block; animation: fadeUp .9s var(--ease-out) both; }
 .hero-display .line-1 { animation-delay: .1s; }
@@ -353,7 +353,7 @@ section.hero {
 
 .hero-divider {
   display: flex; align-items: center;
-  gap: 14px; margin: 6px 0; height: 14px;
+  gap: 12px; margin: 2px 0; height: 12px;
   opacity: 0;
   animation: fadeUp .8s var(--ease-out) .35s forwards;
 }
@@ -367,7 +367,7 @@ section.hero {
   0%, 100% { box-shadow: 0 0 0 4px rgba(196, 136, 27, 0.12); }
   50%      { box-shadow: 0 0 0 8px rgba(196, 136, 27, 0.05); }
 }
-.hero-divider .line-art { flex: 1; max-width: 220px; height: 14px; overflow: visible; }
+.hero-divider .line-art { flex: 1; max-width: 170px; height: 12px; overflow: visible; }
 .hero-divider .line-art .path-line {
   fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-linecap: round;
   stroke-dasharray: 240; stroke-dashoffset: 240;
@@ -393,8 +393,8 @@ section.hero {
 }
 @keyframes underlineGrow { to { transform: scaleX(1); } }
 .hero-lead {
-  font-size: clamp(16px, 1.2vw, 18px); line-height: 1.55;
-  color: var(--text); margin: 0 0 36px; max-width: 540px;
+  font-size: clamp(15px, 1.05vw, 16.5px); line-height: 1.6;
+  color: var(--text); margin: 0 0 28px; max-width: 500px;
   text-wrap: pretty;
   animation: fadeUp .9s var(--ease-out) .3s both;
 }
@@ -403,7 +403,7 @@ section.hero {
   animation: fadeUp .9s var(--ease-out) .5s both;
 }
 .hero-meta {
-  margin-top: 36px; font-size: 12.5px; color: var(--secondary);
+  margin-top: 26px; font-size: 12.5px; color: var(--secondary);
   letter-spacing: 0.04em;
   animation: fadeIn .8s var(--ease) .9s both;
   display: inline-flex; align-items: center; gap: 12px;
@@ -450,9 +450,10 @@ section.hero {
   letter-spacing: 0.1em; text-transform: uppercase;
   animation: fadeUp .9s var(--ease-out) .7s both;
 }
-/* Signature de marque premium en glassmorphism, bas-droite de l'image */
+/* Signature de marque premium en glassmorphism, haut-droite de l'image
+   (le garde-corps, en bas de l'image, reste dégagé) */
 .hero-brand-sign {
-  position: absolute; right: 16px; bottom: 16px; z-index: 3;
+  position: absolute; right: 16px; top: 16px; z-index: 3;
   display: flex; flex-direction: column; align-items: center; gap: 8px;
   padding: 16px 22px 13px; text-decoration: none;
   background: rgba(18, 18, 18, 0.52);
