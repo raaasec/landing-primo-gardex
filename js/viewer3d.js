@@ -41,34 +41,45 @@ function makePanelTexture(src) {
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.onload = () => {
-      const w = img.naturalWidth, h = img.naturalHeight;
-      const cv = document.createElement('canvas');
-      cv.width = w; cv.height = h;
-      const ctx = cv.getContext('2d');
-      ctx.drawImage(img, 0, 0);
+      let tex;
+      try {
+        const w = img.naturalWidth, h = img.naturalHeight;
+        const cv = document.createElement('canvas');
+        cv.width = w; cv.height = h;
+        const ctx = cv.getContext('2d');
+        ctx.drawImage(img, 0, 0);
 
-      const data = ctx.getImageData(0, 0, w, h);
-      const px = data.data;
-      // Couleur plate de la tôle (anthracite)
-      const ar = (ANTHRACITE >> 16) & 255;
-      const ag = (ANTHRACITE >> 8) & 255;
-      const ab = ANTHRACITE & 255;
-      // Seuils de perforation (smoothstep sur la luminance)
-      const LO = 0.42, HI = 0.72;
+        // getImageData lève une SecurityError si la page est en file://
+        // (canvas « tainted ») -> on tombe alors dans le catch ci-dessous.
+        const data = ctx.getImageData(0, 0, w, h);
+        const px = data.data;
+        // Couleur plate de la tôle (anthracite)
+        const ar = (ANTHRACITE >> 16) & 255;
+        const ag = (ANTHRACITE >> 8) & 255;
+        const ab = ANTHRACITE & 255;
+        // Seuils de perforation (smoothstep sur la luminance)
+        const LO = 0.42, HI = 0.72;
 
-      for (let i = 0; i < px.length; i += 4) {
-        const L = (0.2126 * px[i] + 0.7152 * px[i + 1] + 0.0722 * px[i + 2]) / 255;
-        // t=0 -> tôle (opaque) ; t=1 -> trou (transparent)
-        let t = (L - LO) / (HI - LO);
-        t = t < 0 ? 0 : t > 1 ? 1 : t;
-        t = t * t * (3 - 2 * t);          // smoothstep -> bords doux, filigrane atténué
-        // Toute la tôle prend la teinte plate : le filigrane sur tôle disparaît.
-        px[i] = ar; px[i + 1] = ag; px[i + 2] = ab;
-        px[i + 3] = Math.round((1 - t) * 255);
+        for (let i = 0; i < px.length; i += 4) {
+          const L = (0.2126 * px[i] + 0.7152 * px[i + 1] + 0.0722 * px[i + 2]) / 255;
+          // t=0 -> tôle (opaque) ; t=1 -> trou (transparent)
+          let t = (L - LO) / (HI - LO);
+          t = t < 0 ? 0 : t > 1 ? 1 : t;
+          t = t * t * (3 - 2 * t);        // smoothstep -> bords doux, filigrane atténué
+          // Toute la tôle prend la teinte plate : le filigrane sur tôle disparaît.
+          px[i] = ar; px[i + 1] = ag; px[i + 2] = ab;
+          px[i + 3] = Math.round((1 - t) * 255);
+        }
+        ctx.putImageData(data, 0, 0);
+
+        tex = new THREE.CanvasTexture(cv);
+      } catch (err) {
+        // Repli : motif affiché sans ajourage (pas de perforation) mais rien ne bloque.
+        console.warn('[viewer3d] Traitement du motif impossible — page ouverte en local (file://) ?' +
+          ' Utilisez un serveur local (Live Server) pour les perforations.', err);
+        tex = new THREE.Texture(img);
+        tex.needsUpdate = true;
       }
-      ctx.putImageData(data, 0, 0);
-
-      const tex = new THREE.CanvasTexture(cv);
       tex.colorSpace = THREE.SRGBColorSpace;
       tex.anisotropy = 8;
       tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
@@ -119,6 +130,7 @@ function initViewer(root) {
   }
 
   if (!webglAvailable()) {
+    window.__gcReady = true;
     if (loading) loading.hidden = true;
     if (hint) hint.hidden = true;
     if (fallback) fallback.hidden = false;
@@ -282,10 +294,12 @@ function initViewer(root) {
   makePanelTexture(firstBtn.dataset.src).then(tex => {
     applyMotif(tex);
     firstBtn.setAttribute('aria-pressed', 'true');
+    window.__gcReady = true;
     if (loading) loading.hidden = true;
     renderer.render(scene, camera);
     if (stageVisible) start();
   }).catch(() => {
+    window.__gcReady = true;
     if (loading) loading.textContent = 'Modèle indisponible.';
   });
 

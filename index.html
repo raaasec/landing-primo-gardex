@@ -834,7 +834,25 @@
   }
 }
 </script>
-<script type="module" src="js/viewer3d.js"></script>
+<script type="module" src="js/viewer3d.js" onerror="window.__gcModuleError=true"></script>
+<!-- Chien de garde : jamais de chargement infini (CDN bloqué, module en erreur…) -->
+<script>
+  window.addEventListener('load', function () {
+    setTimeout(function () {
+      if (window.__gcReady) return; // viewer prêt : rien à faire
+      var loading  = document.getElementById('gcLoading');
+      var fallback = document.getElementById('gcFallback');
+      var hint     = document.getElementById('gcHint');
+      if (loading)  loading.hidden = true;
+      if (hint)     hint.hidden = true;
+      if (fallback) fallback.hidden = false;
+      Array.prototype.forEach.call(document.querySelectorAll('.gc-motif'), function (b) {
+        b.disabled = true; b.setAttribute('aria-disabled', 'true');
+      });
+      console.warn('[viewer3d] 3D non initialisée (Three.js chargé ? page servie via http ?). Repli affiché.');
+    }, 10000);
+  });
+</script>
 
 </body>
 </html>

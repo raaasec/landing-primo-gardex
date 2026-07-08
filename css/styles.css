@@ -1501,6 +1501,11 @@ section.uf-custom {
   object-fit: cover; display: block;
 }
 
+/* IMPORTANT : ces règles display:flex/block écrasent l'attribut [hidden]
+   (display:none de l'UA). On restaure donc l'effet de [hidden] ici,
+   sinon l'overlay de chargement ne disparaît jamais. */
+.gc-loading[hidden], .gc-fallback[hidden] { display: none; }
+
 /* État de chargement */
 .gc-loading {
   position: absolute; inset: 0; display: flex;
