@@ -562,10 +562,12 @@ section.dual-angles {
 }
 .tppme-figure-unit { font-family: var(--serif); font-size: 30px; color: rgba(255, 255, 255, 0.9); }
 @media (hover: hover) and (pointer: fine) {
+  /* Carte accent : reste SOMBRE au survol (texte blanc lisible), jamais de fond clair */
   .tppme-item--accent:hover {
     transform: translateY(-3px);
-    box-shadow: 0 22px 44px rgba(26, 26, 26, 0.28);
-    border-left-color: transparent; background: linear-gradient(150deg, var(--brand-600) 0%, var(--brand-700) 100%);
+    box-shadow: 0 22px 44px rgba(26, 26, 26, 0.30);
+    border-left-color: transparent;
+    background: linear-gradient(150deg, #2b2b2b 0%, var(--ink) 100%);
   }
 }
 .tppme-item-icon {
@@ -582,14 +584,15 @@ section.dual-angles {
   transition: stroke .4s var(--ease);
 }
 @media (hover: hover) and (pointer: fine) {
-  .tppme-item:hover {
+  /* Cartes standard uniquement (la carte accent est exclue : sinon fond blanc + texte blanc) */
+  .tppme-item:not(.tppme-item--accent):hover {
     transform: translateY(-3px);
     box-shadow: 0 12px 24px rgba(42, 46, 48, 0.08);
     border-left-color: var(--accent);
     background: #fff;
   }
-  .tppme-item:hover .tppme-item-icon { background: var(--accent); transform: rotate(-4deg); }
-  .tppme-item:hover .tppme-item-icon svg { stroke: #fff; }
+  .tppme-item:not(.tppme-item--accent):hover .tppme-item-icon { background: var(--accent); transform: rotate(-4deg); }
+  .tppme-item:not(.tppme-item--accent):hover .tppme-item-icon svg { stroke: #fff; }
 }
 
 /* ===== SECTION MOTIFS ===== */
@@ -970,7 +973,7 @@ section.benefits { padding: 120px 0; background: var(--bg-card); }
 /* ============================================================
    PROCESS / CONDITIONS — pile de cartes au scroll
    ============================================================ */
-section.process { background: var(--bg-soft); padding-top: 80px; padding-bottom: 0; }
+section.process { background: var(--bg-soft); padding-top: clamp(48px, 7vh, 80px); padding-bottom: clamp(48px, 7vh, 96px); }
 .process-intro { text-align: center; margin-bottom: 24px; max-width: 720px; margin-left: auto; margin-right: auto; padding: 0 32px; }
 .process-intro h2 {
   font-family: var(--serif); font-weight: 700;
@@ -1607,10 +1610,10 @@ section.uf-patterns { background: var(--bg-card); }
 
 /* Grille de motifs (utilisée par la section dédiée #motifs) */
 .uf-renders-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+  max-width: 760px; margin: 0 auto;
 }
-@media (max-width: 760px) { .uf-renders-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 380px) { .uf-renders-grid { grid-template-columns: 1fr; } }
+@media (max-width: 680px) { .uf-renders-grid { grid-template-columns: 1fr; max-width: 320px; } }
 .uf-render-card {
   background: var(--bg-card); border: 1px solid var(--line-soft);
   border-radius: var(--r-md); overflow: hidden;
@@ -1621,6 +1624,7 @@ section.uf-patterns { background: var(--bg-card); }
 }
 .uf-render-pattern { aspect-ratio: 1 / 1; background: var(--ink-800); }
 .uf-render-pattern svg { width: 100%; height: 100%; display: block; }
+.uf-render-pattern img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .uf-render-info { padding: 16px 16px 18px; }
 .uf-render-name {
   font-family: var(--sans); font-size: 12px; font-weight: 700;
