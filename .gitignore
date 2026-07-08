@@ -1,0 +1,10 @@
+# macOS
+.DS_Store
+# Dépendances / build
+node_modules/
+# Vercel
+.vercel
+# Config locale Claude Code
+.claude/
+# Logs
+*.log

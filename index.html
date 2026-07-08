@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cercle Partenaire — Primo Gardex</title>
+  <meta name="description" content="Le Cercle Partenaire : un cadre de collaboration dédié aux professionnels du garde-corps. Kits sur mesure prêts à poser, conditions dédiées et outils pensés pour vos chantiers.">
+
+  <!-- Polices Google Fonts : Poppins (titres) + Inter (textes).
+       preconnect = on prépare la connexion pour charger les polices plus vite. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap">
+
+  <!-- Feuille de styles du projet -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- ============================================================
+     ZONE RÉSERVÉE DSI — TOPBAR / HEADER
+     Le header du site Primo Gardex (menu, compte, etc.) sera intégré ici
+     par la DSI. Laissez ce conteneur vide, ou collez-y le code existant.
+     ============================================================ -->
+<div id="dsi-topbar"></div>
+
+<!-- ============== HERO ============== -->
+<section class="hero section-screen section-snap">
+  <div class="hero-texture" aria-hidden="true"></div>
+  <div class="hero-bg-shape"></div>
+
+  <div class="container">
+    <div class="hero-grid">
+
+      <!-- COLONNE GAUCHE — texte -->
+      <div class="hero-copy">
+        <!-- Logo Primo Gardex (image + repli texte si l'image manque) -->
+        <a class="brand-logo" href="https://primo-gardex.com/" style="margin-bottom:22px" aria-label="Primo Gardex — accueil">
+          <img src="images/logo-primo-gardex.png" alt="Primo Gardex"
+               width="56" height="56"
+               onerror="this.onerror=null;this.outerHTML='<span class=&quot;brand-logo-fallback&quot;>Primo<em>Gardex</em></span>'">
+        </a>
+
+        <span class="hero-invite">
+          <span class="dot" aria-hidden="true"></span>
+          Cercle Partenaire
+        </span>
+        <h1 class="hero-display">
+          <span class="line line-1">Une collaboration</span>
+          <span class="hero-divider" aria-hidden="true">
+            <span class="dot"></span>
+            <svg class="line-art" viewBox="0 0 240 14" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+              <path class="path-line" d="M 0 10 Q 100 10 200 4"></path>
+              <path class="path-arrow" d="M 192 1 L 204 4 L 196 12"></path>
+            </svg>
+          </span>
+          <span class="line line-2">se construit <em>dans le temps.</em></span>
+        </h1>
+        <p class="hero-lead">
+          Des kits garde-corps sur mesure, prêts à poser, et des conditions dédiées aux professionnels qui travaillent régulièrement avec Primo Gardex.
+        </p>
+        <div class="hero-cta-row">
+          <a href="https://primo-gardex.com/mon-compte/" class="btn btn-primary">
+            Mon compte Primo Gardex
+            <span class="arrow">→</span>
+          </a>
+          <a href="#conditions" class="btn btn-ghost">Voir les conditions</a>
+        </div>
+        <div class="hero-meta">Statut valable 1 an · 3 commandes pour prolonger vos avantages</div>
+      </div>
+
+      <!-- COLONNE DROITE — composition visuelle (2 photos) -->
+      <div class="hero-visual">
+        <div class="hero-accent-line" aria-hidden="true"></div>
+
+        <div class="hero-photo">
+          <!-- IMG-HERO-1 · Photo principale · garde-corps de balcon en situation, remplissage tôle perforée · portrait 4/5 (≈ 1200×1500 px) -->
+          <img src="images/hero-balcon.jpg"
+               alt="Garde-corps de balcon Primo Gardex avec remplissage en tôle perforée"
+               onerror="this.onerror=null;this.src='https://placehold.co/1200x1500/1A1A1A/FFC349?text=Garde-corps+balcon'">
+          <div class="hero-photo-caption">
+            <span>Garde-corps de balcon</span>
+            <span class="ref">Remplissage tôle perforée</span>
+          </div>
+        </div>
+
+        <div class="hero-photo-2">
+          <!-- IMG-HERO-2 · Photo secondaire (incrustée) · détail de fixation sur platines / main courante · portrait 3/4 (≈ 600×800 px) -->
+          <img src="images/hero-detail.jpg"
+               alt="Détail d'une fixation sur platines et main courante Primo Gardex"
+               onerror="this.onerror=null;this.src='https://placehold.co/600x800/C4881B/FAF6EE?text=Detail+fixation'">
+          <span class="ref-mini">Fixation platines</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============== PRIMO GARDEX, CONCRÈTEMENT — contexte ============== -->
+<section class="uf-context section-screen" id="primo-gardex">
+  <div class="container">
+    <div class="uf-context-head reveal">
+      <div class="uf-context-intro">
+        <span class="eyebrow">Primo Gardex, concrètement</span>
+        <h2>Kits garde-corps sur mesure, <em>prêts à poser.</em></h2>
+        <p class="uf-context-lead">
+          Marque de Dampere, Primo Gardex conçoit des garde-corps à remplissage décoratif en tôle perforée ou découpe laser, thermolaqués RAL. Vous les configurez en ligne, ils sont fabriqués en usine, puis livrés prêts à poser — conçus pour répondre aux normes de sécurité garde-corps <span title="À valider côté métier">[à valider côté métier]</span>.
+        </p>
+        <ul class="uf-context-tags" aria-label="Points clés">
+          <li>Sur mesure</li>
+          <li>Prêt à poser</li>
+          <li>Sécurité anti-chute</li>
+          <li>Tôle perforée</li>
+          <li>RAL</li>
+        </ul>
+      </div>
+      <div class="uf-context-visual" aria-hidden="false">
+        <!-- IMG-CTX-1 · garde-corps de terrasse en situation · paysage (≈ 900×640 px) -->
+        <img class="uf-context-img-main"
+             src="images/contexte-terrasse.jpg"
+             alt="Garde-corps de terrasse Primo Gardex thermolaqué" loading="lazy"
+             onerror="this.onerror=null;this.src='https://placehold.co/900x640/1A1A1A/FFC349?text=Garde-corps+terrasse'">
+        <!-- IMG-CTX-2 · détail du remplissage perforé · carré (≈ 420×420 px) -->
+        <img class="uf-context-img-inset"
+             src="images/contexte-detail.jpg"
+             alt="Détail d'un remplissage en tôle perforée" loading="lazy"
+             onerror="this.onerror=null;this.src='https://placehold.co/420x420/C4881B/FAF6EE?text=Detail'">
+      </div>
+    </div>
+
+    <!-- Schéma : vos solutions habituelles (discret) + Primo Gardex (valorisé) -->
+    <div class="uf-equation reveal">
+      <div class="uf-eq-block uf-eq-base">
+        <span class="uf-eq-label">Vos solutions habituelles</span>
+        <ul class="uf-eq-list">
+          <li>Fabrication interne</li>
+          <li>Soudure sur site</li>
+          <li>Barreaudage standard</li>
+        </ul>
+      </div>
+
+      <div class="uf-eq-plus" aria-hidden="true">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 5 L12 19 M5 12 L19 12"></path></svg>
+      </div>
+
+      <div class="uf-eq-block uf-eq-brand">
+        <!-- Mini pattern de tôle perforée (décoratif) -->
+        <span class="uf-eq-perf" aria-hidden="true"></span>
+        <div class="uf-eq-brand-head">
+          <img class="uf-eq-logo" src="images/logo-primo-gardex.png" alt="Primo Gardex"
+               width="30" height="30"
+               onerror="this.onerror=null;this.outerHTML='<span class=&quot;brand-logo-fallback&quot;>Primo Gardex</span>'">
+          <span class="uf-eq-badge">Solution prête à poser</span>
+        </div>
+        <p class="uf-eq-sub">Kit garde-corps sur mesure</p>
+        <ul class="uf-eq-list uf-eq-list--brand">
+          <li>Prêt à poser</li>
+          <li>Gain de temps</li>
+          <li>Remplissage décoratif</li>
+          <li>Fabrication en usine</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="uf-eq-foot reveal">
+      Une solution en plus, pas un remplacement.
+    </p>
+
+    <!-- Carte sécurité — introduit les 3 piliers -->
+    <div class="uf-security reveal">
+      <div class="uf-security-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 3 L20 6 V11 c0 5 -3.5 8.5 -8 10 c-4.5 -1.5 -8 -5 -8 -10 V6 Z"></path>
+          <path d="M12 9 a3 3 0 0 1 0 6 a3 3 0 0 1 0 -6 Z"></path>
+        </svg>
+      </div>
+      <div class="uf-security-text">
+        <h3>Le garde-corps est d'abord un enjeu anti-chute</h3>
+        <p>Balcons, terrasses, mezzanines, coursives, ERP&nbsp;: protéger contre les chutes de hauteur est une exigence. Une réponse durable, esthétique et fabriquée sur mesure.</p>
+      </div>
+    </div>
+
+    <!-- 3 piliers -->
+    <ul class="uf-pillars reveal">
+      <li class="uf-pillar">
+        <span class="uf-pillar-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 3 L20 6 V11 c0 5 -3.5 8.5 -8 10 c-4.5 -1.5 -8 -5 -8 -10 V6 Z"></path>
+          </svg>
+        </span>
+        <h3 class="uf-pillar-title">Sécuriser</h3>
+        <p class="uf-pillar-body">Protéger les chutes de hauteur sur balcons, terrasses et paliers.</p>
+      </li>
+      <li class="uf-pillar">
+        <span class="uf-pillar-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 4 L18 4 L18 20 L6 20 Z"></path>
+            <path d="M9 8 L15 8 M9 12 L15 12 M9 16 L13 16"></path>
+          </svg>
+        </span>
+        <h3 class="uf-pillar-title">Fabriquer sur mesure</h3>
+        <p class="uf-pillar-body">Dimensions, pose, remplissage et teinte RAL adaptés au projet.</p>
+      </li>
+      <li class="uf-pillar">
+        <span class="uf-pillar-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 12 a8 8 0 0 1 16 0"></path>
+            <path d="M12 4 L12 12 L17 15"></path>
+            <circle cx="12" cy="20" r="1"></circle>
+          </svg>
+        </span>
+        <h3 class="uf-pillar-title">Compléter votre gamme</h3>
+        <p class="uf-pillar-body">Une solution prête à poser à proposer en plus de vos ouvrages habituels.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============== LEVIERS — les 6 avantages ============== -->
+<section class="dual-angles section-screen section-snap" id="avantages">
+  <div class="container">
+    <div class="dual-angles-intro reveal">
+      <span class="eyebrow">Vos avantages partenaires</span>
+      <h2>Les avantages des <em>partenaires.</em></h2>
+      <p>Des conditions concrètes pour travailler plus simplement avec Primo Gardex.</p>
+    </div>
+
+    <ul class="tppme-grid reveal">
+
+      <!-- 01 — 15 % de remise · carte mise en avant -->
+      <li class="tppme-item tppme-item--accent">
+        <span class="tppme-item-badge">Avantage clé</span>
+        <div class="tppme-figure" aria-hidden="true">
+          <span class="tppme-figure-num">15</span>
+          <span class="tppme-figure-unit">%</span>
+        </div>
+        <h4 class="tppme-item-title">de remise partenaire</h4>
+        <p class="tppme-item-body">Appliquée automatiquement sur vos commandes.</p>
+      </li>
+
+      <!-- 02 — Prix bloqués 3 mois -->
+      <li class="tppme-item">
+        <div class="tppme-item-head">
+        <span class="tppme-item-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="11" width="14" height="9" rx="1.5"></rect>
+            <path d="M8 11 V 8 a 4 4 0 0 1 8 0 V 11"></path>
+            <circle cx="12" cy="15.5" r="1.3"></circle>
+          </svg>
+        </span>
+        <h4 class="tppme-item-title">Prix bloqués 3 mois</h4>
+        </div>
+        <p class="tppme-item-body">Une base tarifaire stable pendant la validation du projet.</p>
+      </li>
+
+      <!-- 03 — Support partenaire dédié -->
+      <li class="tppme-item">
+        <div class="tppme-item-head">
+        <span class="tppme-item-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 14 a 8 8 0 0 1 16 0"></path>
+            <path d="M4 14 V 17 a 2 2 0 0 0 2 2 H 8 V 13 H 6 a 2 2 0 0 0 -2 1 Z"></path>
+            <path d="M20 14 V 17 a 2 2 0 0 1 -2 2 H 16 V 13 H 18 a 2 2 0 0 1 2 1 Z"></path>
+          </svg>
+        </span>
+        <h4 class="tppme-item-title">Support dédié</h4>
+        </div>
+        <p class="tppme-item-body">Des réponses plus rapides sur vos configurations et vos délais.</p>
+      </li>
+
+      <!-- 04 — Configurateur partenaire -->
+      <li class="tppme-item">
+        <div class="tppme-item-head">
+        <span class="tppme-item-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="6" r="1.6"></circle>
+            <path d="M12 7.6 L 6 20"></path>
+            <path d="M12 7.6 L 18 20"></path>
+            <path d="M9 14 L 15 14"></path>
+          </svg>
+        </span>
+        <h4 class="tppme-item-title">Configurateur partenaires</h4>
+        </div>
+        <p class="tppme-item-body">Chiffrage, options et mise en production simplifiés.</p>
+      </li>
+
+      <!-- 05 — Catalogue personnalisé -->
+      <li class="tppme-item">
+        <div class="tppme-item-head">
+        <span class="tppme-item-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 5 C 6 5 9 6 12 7 C 15 6 18 5 21 5 L 21 19 C 18 19 15 20 12 21 C 9 20 6 19 3 19 Z"></path>
+            <path d="M12 7 L 12 21"></path>
+          </svg>
+        </span>
+        <h4 class="tppme-item-title">Catalogue personnalisé offert</h4>
+        </div>
+        <p class="tppme-item-body">Un support papier à votre enseigne pour vos rendez-vous client.</p>
+      </li>
+
+      <!-- 06 — Motifs à prix cadré -->
+      <li class="tppme-item">
+        <div class="tppme-item-head">
+        <span class="tppme-item-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 12 L 12 3 L 21 3 L 21 12 L 12 21 Z"></path>
+            <circle cx="16.5" cy="7.5" r="1.4"></circle>
+          </svg>
+        </span>
+        <h4 class="tppme-item-title">Motifs à prix cadré</h4>
+        </div>
+        <p class="tppme-item-body">Des remplissages décoratifs qualitatifs dans un cadre économique maîtrisé.</p>
+      </li>
+    </ul>
+
+  </div>
+</section>
+
+<!-- ============== CONFIGURATEUR (sur mesure) ============== -->
+<section class="uf-custom section-screen" id="sur-mesure">
+  <div class="container">
+    <!-- Discours court -->
+    <div class="uf-custom-intro reveal">
+      <span class="eyebrow">Sur mesure</span>
+      <h2>Configurez votre garde-corps, <em>nous le fabriquons.</em></h2>
+      <p>Longueur, hauteur, pose, remplissage et teinte RAL&nbsp;: une configuration indicative avant de lancer un vrai projet.</p>
+    </div>
+
+    <!-- Mini-configurateur interactif (démonstratif) -->
+    <div class="uf-configurator reveal" id="ufConfigurator"
+         data-length="6" data-height="1000" data-implantation="platines"
+         data-pattern="privacy" data-color="anthracite">
+
+      <div class="uf-cfg-head">
+        <span class="uf-cfg-brand">
+          <span class="uf-cfg-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2.5" y="2.5" width="19" height="19" rx="5"></rect>
+              <circle cx="8" cy="8" r="1.3"></circle><circle cx="12" cy="8" r="1.3"></circle><circle cx="16" cy="8" r="1.3"></circle>
+              <circle cx="8" cy="12" r="1.3"></circle><circle cx="12" cy="12" r="1.3"></circle><circle cx="16" cy="12" r="1.3"></circle>
+              <circle cx="8" cy="16" r="1.3"></circle><circle cx="12" cy="16" r="1.3"></circle><circle cx="16" cy="16" r="1.3"></circle>
+            </svg>
+          </span>
+          Configurateur Primo Gardex
+        </span>
+        <span class="uf-cfg-title">Visualisez le sur-mesure</span>
+        <p class="uf-cfg-intro">Longueur, hauteur, pose, remplissage, teinte&nbsp;: un aperçu indicatif avant projet.</p>
+      </div>
+
+      <div class="uf-cfg-body">
+
+        <!-- Colonne gauche — aperçu sticky + finition -->
+        <div class="uf-cfg-left">
+          <div class="uf-cfg-preview">
+            <div class="uf-cfg-stage" id="ufStage" aria-hidden="true">
+              <div class="uf-cfg-sky"></div>
+              <div class="uf-cfg-fence" id="ufFence"></div>
+              <div class="uf-cfg-base" id="ufBase"></div>
+              <div class="uf-cfg-ground"></div>
+              <span class="uf-cfg-pose-tag" id="ufPoseTag">sur platines</span>
+            </div>
+            <!-- Cote de longueur (illustrative) -->
+            <div class="uf-cfg-cote" aria-hidden="true">
+              <span class="uf-cfg-cote-bar" id="ufCoteBar"><span class="uf-cfg-cote-val" id="ufCoteVal">6 ml</span></span>
+            </div>
+            <span class="uf-cfg-disclaimer">Vue indicative — dimensions finales au projet.</span>
+          </div>
+
+          <!-- Résumé compact -->
+          <div class="uf-cfg-chips" aria-live="polite">
+            <span class="uf-cfg-chip" id="ufChipLen">6 ml</span>
+            <span class="uf-cfg-chip" id="ufChipHeight">1 000 mm</span>
+            <span class="uf-cfg-chip" id="ufChipImpl">Sur platines</span>
+            <span class="uf-cfg-chip" id="ufChipPattern">Occultant</span>
+            <span class="uf-cfg-chip uf-cfg-chip--color" id="ufChipColor">Anthracite</span>
+          </div>
+
+          <!-- Finition (teintes RAL au plus près de l'aperçu) -->
+          <div class="uf-cfg-finish">
+            <span class="uf-cfg-sublabel" id="ufColorLabel">Finition <output id="ufColorOut">Anthracite</output></span>
+            <div class="uf-cfg-swatches" role="group" aria-labelledby="ufColorLabel" data-control="color" id="ufSwatches"></div>
+            <p class="uf-cfg-note">Exemples de teintes RAL — autres finitions possibles selon projet.</p>
+          </div>
+        </div>
+
+        <!-- Colonne droite — contrôles -->
+        <div class="uf-cfg-right">
+
+          <div class="uf-cfg-field">
+            <label class="uf-cfg-sublabel" for="ufLength">Longueur <output id="ufLengthOut" for="ufLength">6 ml</output></label>
+            <input class="uf-cfg-range" type="range" id="ufLength" min="2" max="12" step="1" value="6">
+          </div>
+
+          <div class="uf-cfg-field">
+            <label class="uf-cfg-sublabel" for="ufHeight">Hauteur (main courante) <output id="ufHeightOut" for="ufHeight">1 000 mm</output></label>
+            <input class="uf-cfg-range" type="range" id="ufHeight" min="900" max="1200" step="50" value="1000">
+            <p class="uf-cfg-hint">≈ 1 m pour une main courante standard, option rehausse au-delà.</p>
+          </div>
+
+          <div class="uf-cfg-field">
+            <span class="uf-cfg-sublabel" id="ufImplLabel">Pose</span>
+            <div class="uf-cfg-poses" role="group" aria-labelledby="ufImplLabel" data-control="implantation">
+              <button type="button" class="uf-cfg-pose" data-value="platines" aria-pressed="true">
+                <span class="uf-cfg-pose-ico" aria-hidden="true">
+                  <svg viewBox="0 0 36 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+                    <rect x="9" y="3" width="18" height="15" rx="1"></rect>
+                    <path d="M11 18v5 M25 18v5"></path>
+                    <rect x="6" y="23" width="10" height="3" rx="1" fill="currentColor" stroke="none"></rect>
+                    <rect x="20" y="23" width="10" height="3" rx="1" fill="currentColor" stroke="none"></rect>
+                  </svg>
+                </span>
+                <span class="uf-cfg-pose-name">Sur platines (dalle / balcon)</span>
+              </button>
+              <button type="button" class="uf-cfg-pose" data-value="beton" aria-pressed="false">
+                <span class="uf-cfg-pose-ico" aria-hidden="true">
+                  <svg viewBox="0 0 36 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+                    <rect x="7" y="3" width="22" height="14" rx="1"></rect>
+                    <rect x="3" y="20" width="30" height="4" rx="1" fill="currentColor" fill-opacity="0.28" stroke="none"></rect>
+                  </svg>
+                </span>
+                <span class="uf-cfg-pose-name">Scellement (dans la dalle)</span>
+              </button>
+              <button type="button" class="uf-cfg-pose" data-value="muret" aria-pressed="false">
+                <span class="uf-cfg-pose-ico" aria-hidden="true">
+                  <svg viewBox="0 0 36 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+                    <rect x="7" y="3" width="22" height="12" rx="1"></rect>
+                    <rect x="4" y="17" width="28" height="8" rx="1" fill="currentColor" fill-opacity="0.16" stroke="none"></rect>
+                    <path d="M4 21h28 M12 17v8 M20 17v8 M28 17v8"></path>
+                  </svg>
+                </span>
+                <span class="uf-cfg-pose-name">Sur muret / acrotère</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="uf-cfg-field">
+            <span class="uf-cfg-sublabel" id="ufPatternLabel">Remplissage</span>
+            <p class="uf-cfg-hint">Le niveau d'ajourage dépend du motif choisi.</p>
+            <div class="uf-cfg-motifs" role="group" aria-labelledby="ufPatternLabel" data-control="pattern">
+              <button type="button" class="uf-cfg-motif" data-value="privacy" aria-pressed="true">
+                <span class="uf-cfg-motif-swatch uf-motif--privacy" aria-hidden="true"></span>
+                <span class="uf-cfg-motif-name">Occultant</span>
+                <span class="uf-cfg-motif-level">Dense</span>
+              </button>
+              <button type="button" class="uf-cfg-motif" data-value="balanced" aria-pressed="false">
+                <span class="uf-cfg-motif-swatch uf-motif--balanced" aria-hidden="true"></span>
+                <span class="uf-cfg-motif-name">Semi-ajouré</span>
+                <span class="uf-cfg-motif-level">Intermédiaire</span>
+              </button>
+              <button type="button" class="uf-cfg-motif" data-value="open" aria-pressed="false">
+                <span class="uf-cfg-motif-swatch uf-motif--open" aria-hidden="true"></span>
+                <span class="uf-cfg-motif-name">Ajouré</span>
+                <span class="uf-cfg-motif-level">Plus ouvert</span>
+              </button>
+            </div>
+            <p class="uf-cfg-note">Remplissages indicatifs — choix final selon la gamme et le projet.</p>
+          </div>
+
+          <div class="uf-cfg-cta-row">
+            <a class="btn btn-primary uf-cfg-cta" href="https://primo-gardex.com/configurateur/" target="_blank" rel="noopener">
+              Configurer un vrai projet <span class="arrow">→</span>
+            </a>
+          </div>
+          <span class="uf-cfg-cta-sub">Le configurateur complet permet de renseigner vos cotes précises et de lancer la fabrication.</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============== MOTIFS / REMPLISSAGES (section dédiée) ============== -->
+<section class="uf-patterns section-screen section-snap" id="motifs">
+  <div class="container">
+    <div class="uf-patterns-head reveal">
+      <span class="eyebrow">Motifs &amp; remplissages</span>
+      <h2>Un remplissage pour chaque <em>projet.</em></h2>
+      <p>Chaque garde-corps reste fabriqué à la demande, selon le motif choisi.</p>
+    </div>
+
+    <div class="uf-renders-grid reveal">
+
+      <article class="uf-render-card">
+        <div class="uf-render-pattern">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <defs>
+              <pattern id="r-tocima" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                <rect width="20" height="20" fill="#1A1A1A"></rect>
+                <circle cx="10" cy="10" r="3.5" fill="#FAF6EE"></circle>
+                <circle cx="0" cy="0" r="1.5" fill="#FAF6EE"></circle>
+                <circle cx="20" cy="0" r="1.5" fill="#FAF6EE"></circle>
+                <circle cx="0" cy="20" r="1.5" fill="#FAF6EE"></circle>
+                <circle cx="20" cy="20" r="1.5" fill="#FAF6EE"></circle>
+              </pattern>
+            </defs>
+            <rect width="100" height="100" fill="url(#r-tocima)"></rect>
+          </svg>
+        </div>
+        <div class="uf-render-info">
+          <div class="uf-render-name">Tocima</div>
+          <div class="uf-render-meta">Ajourage moyen</div>
+          <span class="uf-render-usage">Résidentiel</span>
+        </div>
+      </article>
+
+      <article class="uf-render-card">
+        <div class="uf-render-pattern">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <defs>
+              <pattern id="r-octopus" x="0" y="0" width="25" height="25" patternUnits="userSpaceOnUse">
+                <rect width="25" height="25" fill="#1A1A1A"></rect>
+                <path d="M12.5 8 L17 12.5 L12.5 17 L8 12.5 Z" fill="#FAF6EE"></path>
+                <circle cx="12.5" cy="12.5" r="1" fill="#1A1A1A"></circle>
+              </pattern>
+            </defs>
+            <rect width="100" height="100" fill="url(#r-octopus)"></rect>
+          </svg>
+        </div>
+        <div class="uf-render-info">
+          <div class="uf-render-name">Octopus</div>
+          <div class="uf-render-meta">Très occultant</div>
+          <span class="uf-render-usage">Intimité · résidentiel</span>
+        </div>
+      </article>
+
+      <article class="uf-render-card">
+        <div class="uf-render-pattern">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <defs>
+              <pattern id="r-agostine" x="0" y="0" width="22" height="22" patternUnits="userSpaceOnUse">
+                <rect width="22" height="22" fill="#1A1A1A"></rect>
+                <path d="M3 5 Q8 2 11 6 T19 7 L18 12 Q14 14 11 11 T4 10 Z" fill="#FAF6EE"></path>
+                <ellipse cx="11" cy="17" rx="3" ry="1.5" fill="#FAF6EE"></ellipse>
+              </pattern>
+            </defs>
+            <rect width="100" height="100" fill="url(#r-agostine)"></rect>
+          </svg>
+        </div>
+        <div class="uf-render-info">
+          <div class="uf-render-name">Agostine Magma</div>
+          <div class="uf-render-meta">Motif végétal</div>
+          <span class="uf-render-usage">Façade · tertiaire</span>
+        </div>
+      </article>
+
+      <article class="uf-render-card">
+        <div class="uf-render-pattern">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <defs>
+              <pattern id="r-artefact" x="0" y="0" width="18" height="18" patternUnits="userSpaceOnUse">
+                <rect width="18" height="18" fill="#1A1A1A"></rect>
+                <rect x="4" y="4" width="4" height="4" fill="#FAF6EE"></rect>
+                <rect x="10" y="10" width="4" height="4" fill="#FAF6EE"></rect>
+                <rect x="10" y="2" width="2" height="2" fill="#FAF6EE"></rect>
+                <rect x="2" y="14" width="2" height="2" fill="#FAF6EE"></rect>
+              </pattern>
+            </defs>
+            <rect width="100" height="100" fill="url(#r-artefact)"></rect>
+          </svg>
+        </div>
+        <div class="uf-render-info">
+          <div class="uf-render-name">Artefact</div>
+          <div class="uf-render-meta">Motif graphique</div>
+          <span class="uf-render-usage">ERP · collectivité</span>
+        </div>
+      </article>
+
+    </div>
+    <p class="uf-timeline-note reveal">Motifs Dampere présentés à titre d'exemple. Contexte de sécurité éventuel selon l'ajourage <span title="À valider côté métier">[à valider]</span>.</p>
+  </div>
+</section>
+
+<!-- ============== FRISE / DÉLAI (~3 semaines) ============== -->
+<section class="uf-timeline section-screen section-snap" id="delais">
+  <div class="container">
+    <div class="uf-timeline-head reveal">
+      <span class="eyebrow">Le parcours projet</span>
+      <h2>De la configuration au chantier, <em>un rythme lisible.</em></h2>
+      <p>Une fois le projet validé, comptez environ 3 semaines de production express.</p>
+    </div>
+
+    <ol class="uf-timeline-track reveal">
+      <li class="uf-timeline-step">
+        <span class="uf-timeline-marker"><span class="uf-timeline-dot"></span></span>
+        <span class="uf-timeline-when">Étape 1</span>
+        <h3 class="uf-timeline-title">Configuration</h3>
+        <p class="uf-timeline-text">Vous renseignez longueur, hauteur, pose, remplissage et teinte RAL.</p>
+      </li>
+      <li class="uf-timeline-step">
+        <span class="uf-timeline-marker"><span class="uf-timeline-dot"></span></span>
+        <span class="uf-timeline-when">Étape 2</span>
+        <h3 class="uf-timeline-title">Validation</h3>
+        <p class="uf-timeline-text">Le projet est vérifié et validé avant lancement en fabrication.</p>
+      </li>
+      <li class="uf-timeline-step uf-timeline-step--prod">
+        <span class="uf-timeline-marker"><span class="uf-timeline-dot"></span></span>
+        <span class="uf-timeline-when">Étape 3</span>
+        <h3 class="uf-timeline-title">Production express <span class="uf-timeline-badge">≈ 3 semaines</span></h3>
+        <p class="uf-timeline-text">Fabrication sur mesure en usine, après validation.</p>
+      </li>
+      <li class="uf-timeline-step uf-timeline-step--end">
+        <span class="uf-timeline-marker"><span class="uf-timeline-dot"></span></span>
+        <span class="uf-timeline-when">Étape 4</span>
+        <h3 class="uf-timeline-title">Démarrage de votre chantier</h3>
+        <p class="uf-timeline-text">Livraison du kit prêt à poser&nbsp;: vous démarrez la pose.</p>
+      </li>
+    </ol>
+
+    <!-- Visuel agréable en fin de frise -->
+    <div class="uf-timeline-visual reveal">
+      <!-- IMG-TIMELINE · chantier / pose de garde-corps · paysage large (≈ 1600×700 px) -->
+      <img src="images/frise-chantier.jpg"
+           alt="Pose d'un garde-corps Primo Gardex sur un chantier" loading="lazy"
+           onerror="this.onerror=null;this.src='https://placehold.co/1600x700/1A1A1A/FFC349?text=Demarrage+chantier'">
+      <span class="uf-timeline-visual-cap">Prêt à poser sur votre chantier</span>
+    </div>
+
+    <p class="uf-timeline-note reveal">
+      Délai indicatif, selon la configuration et la charge de production.
+    </p>
+  </div>
+</section>
+
+<!-- ============== ORIGINE DU PROGRAMME (positionnement) ============== -->
+<section class="positioning section-screen section-snap" id="cadre">
+  <div class="container">
+    <div class="positioning-grid">
+      <div class="positioning-visual reveal">
+        <!-- IMG-POSITION · garde-corps en situation, ambiance premium · portrait 5/6 (≈ 1000×1200 px) -->
+        <img src="images/origine-programme.jpg"
+             alt="Garde-corps Primo Gardex le long d'une coursive"
+             onerror="this.onerror=null;this.src='https://placehold.co/1000x1200/1A1A1A/FFC349?text=Origine+programme'">
+      </div>
+      <div class="positioning-text reveal">
+        <span class="eyebrow">L'origine du programme</span>
+        <h2>Construire dans la durée, <em>pas seulement vendre.</em></h2>
+        <p>
+          Le <strong>Cercle Partenaire</strong> n'est pas qu'une remise&nbsp;: c'est un cadre pour construire une collaboration régulière avec les professionnels du garde-corps.
+        </p>
+        <ul class="positioning-points">
+          <li class="positioning-point">
+            <span class="positioning-point-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="9" cy="9" r="3"></circle>
+                <path d="M3.5 19 a5.5 5.5 0 0 1 11 0"></path>
+                <circle cx="17" cy="10" r="2.2"></circle>
+                <path d="M15.5 19 a4 4 0 0 1 5.5 -3.4"></path>
+              </svg>
+            </span>
+            <div>
+              <strong>Interlocuteur &amp; suivi dédiés</strong>
+              <span>Un contact qui connaît vos projets, appel après appel <span title="À confirmer">[à confirmer]</span>.</span>
+            </div>
+          </li>
+          <li class="positioning-point">
+            <span class="positioning-point-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 4 H18 V20 H6 Z"></path>
+                <path d="M9 9 H15 M9 13 H15"></path>
+              </svg>
+            </span>
+            <div>
+              <strong>Devis prioritaires</strong>
+              <span>Vos demandes traitées en priorité <span title="À confirmer">[à confirmer]</span>.</span>
+            </div>
+          </li>
+          <li class="positioning-point">
+            <span class="positioning-point-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 12 a8 8 0 0 1 16 0"></path>
+                <path d="M12 4 L12 12 L17 15"></path>
+              </svg>
+            </span>
+            <div>
+              <strong>Accompagnement &amp; conditions stables</strong>
+              <span>Un suivi projet après projet et des conditions qui durent.</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== RÉALISATIONS (mosaïque) ============== -->
+<section class="realisations section-screen" id="realisations">
+  <div class="container">
+    <div class="realisations-head reveal">
+      <div>
+        <span class="eyebrow">Savoir-faire</span>
+        <h2>Quelques <em>cas d'usage.</em></h2>
+      </div>
+      <p class="intro-text">
+        Des projets où la sécurité et le sur-mesure font la différence.
+      </p>
+    </div>
+
+    <div class="realisations-grid reveal">
+      <!-- Rangée 1 : tuile large balcon + 2 standards -->
+      <div class="real-card span-6">
+        <!-- IMG-REA-1 · garde-corps de balcon · paysage (≈ 1200×800 px) -->
+        <img src="images/rea-balcon.jpg"
+             alt="Garde-corps de balcon Primo Gardex" loading="lazy"
+             onerror="this.onerror=null;this.src='https://placehold.co/1200x800/1A1A1A/FFC349?text=Balcon'">
+        <span class="real-card-ref">Type · Balcon</span>
+        <div class="real-card-body">
+          <span class="real-card-tag">Balcon</span>
+          <div class="real-card-title">Garde-corps de balcon, remplissage perforé</div>
+        </div>
+      </div>
+
+      <div class="real-card span-3">
+        <!-- IMG-REA-2 · garde-corps de terrasse · portrait (≈ 600×800 px) -->
+        <img src="images/rea-terrasse.jpg"
+             alt="Garde-corps de terrasse Primo Gardex" loading="lazy"
+             onerror="this.onerror=null;this.src='https://placehold.co/600x800/C4881B/FAF6EE?text=Terrasse'">
+        <span class="real-card-ref">Type · Terrasse</span>
+        <div class="real-card-body">
+          <span class="real-card-tag">Terrasse</span>
+          <div class="real-card-title">Terrasse extérieure</div>
+        </div>
+      </div>
+
+      <div class="real-card span-3">
+        <!-- IMG-REA-3 · garde-corps d'escalier · portrait (≈ 600×800 px) -->
+        <img src="images/rea-escalier.jpg"
+             alt="Garde-corps d'escalier Primo Gardex" loading="lazy"
+             onerror="this.onerror=null;this.src='https://placehold.co/600x800/1A1A1A/FFC349?text=Escalier'">
+        <span class="real-card-ref">Type · Escalier</span>
+        <div class="real-card-body">
+          <span class="real-card-tag">Escalier</span>
+          <div class="real-card-title">Rampe d'escalier</div>
+        </div>
+      </div>
+
+      <!-- Rangée 2 : 2 standards + tuile large coursive -->
+      <div class="real-card span-3">
+        <!-- IMG-REA-4 · garde-corps de mezzanine · portrait (≈ 600×800 px) -->
+        <img src="images/rea-mezzanine.jpg"
+             alt="Garde-corps de mezzanine Primo Gardex" loading="lazy"
+             onerror="this.onerror=null;this.src='https://placehold.co/600x800/C4881B/FAF6EE?text=Mezzanine'">
+        <span class="real-card-ref">Type · Mezzanine</span>
+        <div class="real-card-body">
+          <span class="real-card-tag">Mezzanine</span>
+          <div class="real-card-title">Mezzanine intérieure</div>
+        </div>
+      </div>
+
+      <div class="real-card span-3">
+        <!-- IMG-REA-5 · garde-corps de palier · portrait (≈ 600×800 px) -->
+        <img src="images/rea-palier.jpg"
+             alt="Garde-corps de palier Primo Gardex" loading="lazy"
+             onerror="this.onerror=null;this.src='https://placehold.co/600x800/1A1A1A/FFC349?text=Palier'">
+        <span class="real-card-ref">Type · Palier</span>
+        <div class="real-card-body">
+          <span class="real-card-tag">Palier</span>
+          <div class="real-card-title">Palier d'étage</div>
+        </div>
+      </div>
+
+      <div class="real-card span-6">
+        <!-- IMG-REA-6 · garde-corps de coursive (collectif / ERP) · paysage (≈ 1200×800 px) -->
+        <img src="images/rea-coursive.jpg"
+             alt="Garde-corps de coursive pour un bâtiment collectif" loading="lazy"
+             onerror="this.onerror=null;this.src='https://placehold.co/1200x800/C4881B/FAF6EE?text=Coursive'">
+        <span class="real-card-ref">Type · Coursive</span>
+        <div class="real-card-body">
+          <span class="real-card-tag">Coursive · collectif · ERP</span>
+          <div class="real-card-title">Coursive &amp; site collectif</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== CONDITIONS (étapes au scroll) ============== -->
+<section class="process" id="conditions">
+  <div class="process-intro reveal">
+    <span class="eyebrow">Les conditions</span>
+    <h2>Un cadre qui vit <em>dans la durée.</em></h2>
+    <p>Un statut valable 1 an, reconductible avec 3 commandes sur l'année.</p>
+  </div>
+
+  <!-- Pile d'étapes pilotée au scroll (hauteur calée ~200vh pour éviter tout vide) -->
+  <div class="process-scroll" id="processScroll">
+    <div class="process-pin">
+      <div class="container process-pin-inner">
+
+        <!-- GAUCHE — barre de progression -->
+        <div class="steps-progress" id="stepsProgress">
+          <div class="steps-progress-fill" id="stepsProgressFill"></div>
+          <div class="steps-progress-item" data-step="1" data-active="true">
+            <span class="num">01</span>
+            <span class="label">Activation</span>
+          </div>
+          <div class="steps-progress-item" data-step="2" data-active="false">
+            <span class="num">02</span>
+            <span class="label">Avantages</span>
+          </div>
+          <div class="steps-progress-item" data-step="3" data-active="false">
+            <span class="num">03</span>
+            <span class="label">Renouvellement</span>
+          </div>
+        </div>
+
+        <!-- DROITE — cartes empilées -->
+        <div class="steps-stack" id="stepsStack" data-phase="1">
+
+          <article class="step-card" data-step="1">
+            <div class="step-card-num">01</div>
+            <span class="step-card-eyebrow">Étape 01</span>
+            <h3>Activez votre accès</h3>
+            <p>Deux façons d'activer votre statut partenaire, au choix&nbsp;:</p>
+            <div class="step-card-ways">
+              <div class="step-way">
+                <span class="step-way-ico" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 6 H20 V18 H4 Z"></path>
+                    <circle cx="9" cy="12" r="2"></circle>
+                    <path d="M13 11 H17 M13 14 H16"></path>
+                  </svg>
+                </span>
+                <span class="step-way-text">Depuis votre espace Mon compte Primo Gardex</span>
+              </div>
+              <div class="step-way">
+                <span class="step-way-ico" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="8" r="4"></circle>
+                    <path d="M4 20 a8 8 0 0 1 16 0"></path>
+                  </svg>
+                </span>
+                <span class="step-way-text">Ou contactez votre interlocuteur dédié <span title="À confirmer">[à confirmer]</span></span>
+              </div>
+            </div>
+            <div class="step-card-foot">Activation rapide</div>
+          </article>
+
+          <article class="step-card" data-step="2">
+            <div class="step-card-num">02</div>
+            <span class="step-card-eyebrow">Étape 02</span>
+            <h3>Profitez de vos avantages</h3>
+            <p>Vos conditions s'appliquent sur tous vos projets Primo Gardex, au rythme de vos chantiers.</p>
+            <div class="step-card-chips">
+              <span class="step-chip">15 % de remise</span>
+              <span class="step-chip">Prix bloqués 3 mois</span>
+              <span class="step-chip">Support dédié</span>
+            </div>
+            <div class="step-card-foot">Au rythme de vos chantiers</div>
+          </article>
+
+          <article class="step-card" data-step="3">
+            <div class="step-card-num">03</div>
+            <span class="step-card-eyebrow">Étape 03</span>
+            <h3>Renouvelez votre statut</h3>
+            <p>3 commandes sur l'année suffisent à reconduire votre statut et à prolonger vos avantages pour 12 mois.</p>
+            <div class="step-highlight">
+              <span class="step-highlight-num">3</span>
+              <span class="step-highlight-text">commandes<br>sur l'année</span>
+            </div>
+            <div class="step-card-foot">Reconductible chaque année</div>
+          </article>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Note finale, hors zone "pinned" -->
+  <div class="process-after">
+    <div class="container">
+      <div class="conditions-note reveal">
+        <div class="conditions-note-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+        </div>
+        <div class="conditions-note-text">
+          <strong>Statut valable 1 an, reconductible</strong> · Conditions précisées selon les modalités de commande.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== CTA DE CLÔTURE ============== -->
+<section class="final-cta final-cta--compact section-screen section-snap" id="activer">
+  <!-- IMG-CTA-BG · Image de fond (assombrie par l'overlay) · garde-corps en situation, plan large · paysage large (≈ 1600×900 px) -->
+  <div class="final-cta-bg-image" style="background-image:url('images/cta-fond.jpg')"></div>
+  <div class="final-cta-overlay"></div>
+  <div class="container">
+    <span class="final-cta-brand">
+      <span class="brand-logo">
+        <img src="images/logo-primo-gardex.png" alt="Primo Gardex"
+             width="30" height="30"
+             onerror="this.onerror=null;this.outerHTML='<span style=&quot;color:#fff&quot;>Primo Gardex</span>'">
+      </span>
+      Cercle Partenaire
+    </span>
+    <h2 class="final-headline-xl">
+      Prêt à rejoindre le <em>Cercle</em> Partenaire&nbsp;?
+    </h2>
+    <p>Activez votre accès et profitez de vos conditions dédiées.</p>
+    <a href="https://primo-gardex.com/mon-compte/" class="btn btn-primary">
+      Mon compte Primo Gardex
+      <span class="arrow">→</span>
+    </a>
+    <span class="final-cta-hint">Statut partenaire · activation depuis votre espace client</span>
+    <div class="final-cta-features">
+      <span class="final-cta-feature">Statut valable 1 an</span>
+      <span class="final-cta-feature">3 commandes pour prolonger vos avantages</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     ZONE RÉSERVÉE DSI — FOOTER
+     Le pied de page du site Primo Gardex sera intégré ici par la DSI.
+     Laissez ce conteneur vide, ou collez-y le code existant.
+     ============================================================ -->
+<footer id="dsi-footer"></footer>
+
+<!-- Script du projet (animations & interactions) -->
+<script src="js/script.js"></script>
+
+</body>
+</html>
