@@ -2210,3 +2210,87 @@ a:hover { color: var(--gold-deep); }
 
 /* — Logo dans le bloc « équation » (marque Primo Gardex mise en valeur) — */
 .uf-eq-logo { height: 30px; width: auto; display: block; }
+
+/* ============================================================
+   MOBILE PREMIUM (≤ 768px)
+   Sliders tactiles à scroll-snap horizontal, densité, correction des vides.
+   IMPORTANT : tout est sous media queries -> le rendu DESKTOP est inchangé.
+   ============================================================ */
+@media (max-width: 768px) {
+
+  /* ---- Sliders horizontaux (Apple / Stripe / Linear) ----
+     Une même mécanique pour : cartes contexte, avantages, motifs, réalisations.
+     Extensible : ajouter des items dans le HTML suffit, le slider s'adapte. */
+  .ctx2-cards,
+  .tppme-grid,
+  .uf-renders-grid,
+  .realisations-grid {
+    display: flex !important; flex-wrap: nowrap;
+    grid-template-columns: none !important; grid-auto-rows: auto !important;
+    max-width: none !important; gap: 12px;
+    margin-left: calc(-1 * var(--slider-bleed, 20px));
+    margin-right: calc(-1 * var(--slider-bleed, 20px));
+    padding-left: var(--slider-bleed, 20px);
+    padding-right: var(--slider-bleed, 20px);
+    padding-bottom: 6px;
+    overflow-x: auto; overflow-y: visible;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: var(--slider-bleed, 20px);
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pan-y;
+    scrollbar-width: none;
+  }
+  .ctx2-cards::-webkit-scrollbar,
+  .tppme-grid::-webkit-scrollbar,
+  .uf-renders-grid::-webkit-scrollbar,
+  .realisations-grid::-webkit-scrollbar { display: none; }
+
+  .ctx2-card       { flex: 0 0 66%; scroll-snap-align: start; }
+  .tppme-item      { flex: 0 0 78%; scroll-snap-align: start; }
+  .uf-render-card  { flex: 0 0 60%; scroll-snap-align: center; }
+  .realisations-grid .real-card {
+    flex: 0 0 76%; scroll-snap-align: start; aspect-ratio: 4 / 5;
+  }
+  .real-card.span-6, .real-card.span-3 { grid-column: auto !important; }
+
+  /* Le body des cartes réalisations est toujours visible sur mobile (pas de hover) */
+  .real-card-body { transform: none; opacity: 1; }
+
+  /* ---- Contexte : image d'abord (déjà order:-1), textes resserrés ---- */
+  section.uf-context { padding: 36px 0 40px; }
+  .ctx2 { gap: 18px; }
+  .ctx2-lead { margin-bottom: 16px; }
+  .ctx2-spec { gap: 8px 16px; margin-top: 14px; padding-top: 14px; }
+  .ctx2-visual img { max-height: 34vh; }
+
+  /* ---- Configurateur 3D : mieux contenu, fonctionnement préservé ---- */
+  section.uf-custom { padding: 32px 0; }
+  .uf-custom-intro { margin-bottom: 14px; }
+  .gc-viewer { padding: 12px; }
+  .gc-stage { aspect-ratio: 1 / 1; max-height: 44vh; }
+  .gc-hint { bottom: 8px; font-size: 11px; }
+  .gc-motifs { gap: 8px; margin: 12px 0 2px; }
+  .gc-motif { min-height: 42px; padding: 5px 12px 5px 5px; font-size: 12.5px; }
+  .gc-motif-thumb { width: 30px; height: 30px; }
+  .gc-cta { min-height: 48px; font-size: 15px; margin-top: 12px; }
+
+  /* ---- Conditions : suppression du vide en haut, démarrage propre ---- */
+  section.process { padding-top: 12px !important; padding-bottom: 20px !important; }
+  .process-pin { padding: 0 !important; }
+  .process-head-inline { margin-bottom: 2px; }
+  .process-head-inline .eyebrow { margin-bottom: 8px; }
+  .process-head-inline h2 { margin: 2px 0 6px; }
+  .process-head-inline p { font-size: 14px; }
+  .process-pin-row { gap: 16px; }
+  /* Réalisations : on réduit le bas pour enchaîner plus vite sur les conditions */
+  section.realisations { padding-bottom: 28px; }
+}
+
+/* Réglage fin téléphones étroits */
+@media (max-width: 430px) {
+  .ctx2-card      { flex-basis: 74%; }
+  .tppme-item     { flex-basis: 84%; }
+  .uf-render-card { flex-basis: 68%; }
+  .realisations-grid .real-card { flex-basis: 82%; }
+  .gc-stage { max-height: 40vh; }
+}
