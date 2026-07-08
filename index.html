@@ -34,13 +34,6 @@
 
       <!-- COLONNE GAUCHE — texte -->
       <div class="hero-copy">
-        <!-- Logo Primo Gardex (image + repli texte si l'image manque) -->
-        <a class="brand-logo" href="https://primo-gardex.com/" style="margin-bottom:22px" aria-label="Primo Gardex — accueil">
-          <img src="images/logo-primo-gardex.png" alt="Primo Gardex"
-               width="56" height="56"
-               onerror="this.onerror=null;this.outerHTML='<span class=&quot;brand-logo-fallback&quot;>Primo<em>Gardex</em></span>'">
-        </a>
-
         <span class="hero-invite">
           <span class="dot" aria-hidden="true"></span>
           Cercle Partenaire
@@ -69,12 +62,11 @@
         <div class="hero-meta">Statut valable 1 an · 3 commandes pour prolonger vos avantages</div>
       </div>
 
-      <!-- COLONNE DROITE — composition visuelle (2 photos) -->
+      <!-- COLONNE DROITE — image hero unique + signature de marque -->
       <div class="hero-visual">
         <div class="hero-accent-line" aria-hidden="true"></div>
 
         <div class="hero-photo">
-          <!-- Photo principale · terrasse en situation, remplissage décoratif ajouré -->
           <img src="images/gc-terrasse.jpg" loading="eager"
                alt="Garde-corps de terrasse Primo Gardex, remplissage décoratif ajouré">
           <div class="hero-photo-caption">
@@ -83,12 +75,11 @@
           </div>
         </div>
 
-        <div class="hero-photo-2">
-          <!-- Photo secondaire (incrustée) · détail du motif ajouré -->
-          <img src="images/gc-detail.jpg"
-               alt="Détail d'un remplissage décoratif ajouré Primo Gardex">
-          <span class="ref-mini">Motif ajouré</span>
-        </div>
+        <!-- Signature de marque premium (logo nettoyé, sans cadre, sur carte sombre) -->
+        <a class="hero-brand-card" href="https://primo-gardex.com/" aria-label="Primo Gardex — accueil">
+          <img class="hero-brand-logo" src="images/logo-primo-gardex-clean.png" alt="Primo Gardex">
+          <span class="hero-brand-meta">Marque de Dampere</span>
+        </a>
       </div>
 
     </div>
@@ -140,6 +131,13 @@
             <span class="ctx2-feature-label">Fabriqué en usine</span>
           </li>
         </ul>
+
+        <!-- Encart specs : crédibilité en un coup d'œil -->
+        <div class="ctx2-spec">
+          <span class="ctx2-spec-item">Aluminium thermolaqué</span>
+          <span class="ctx2-spec-item">RAL au choix</span>
+          <span class="ctx2-spec-item">Production ≈ 3 semaines</span>
+        </div>
       </div>
 
       <figure class="ctx2-visual">
@@ -556,102 +554,64 @@
 </section>
 
 <!-- ============== CONDITIONS (étapes au scroll) ============== -->
-<section class="process" id="conditions">
-  <!-- Intro DANS le viewport figé : le sticky démarre immédiatement, tout tient en une hauteur écran -->
-  <div class="process-scroll" id="processScroll">
-    <div class="process-pin">
-      <div class="container process-pin-inner">
+<section class="process section-screen section-snap" id="conditions">
+  <div class="container">
 
-        <div class="process-head-inline reveal">
-          <span class="eyebrow">Les conditions</span>
-          <h2>Un cadre qui vit <em>dans la durée.</em></h2>
-          <p>Un statut valable 1 an, reconductible avec 3 commandes sur l'année.</p>
-        </div>
-
-        <div class="process-pin-row">
-
-          <!-- GAUCHE — barre de progression -->
-          <div class="steps-progress" id="stepsProgress">
-          <div class="steps-progress-fill" id="stepsProgressFill"></div>
-          <div class="steps-progress-item" data-step="1" data-active="true">
-            <span class="num">01</span>
-            <span class="label">Activation</span>
-          </div>
-          <div class="steps-progress-item" data-step="2" data-active="false">
-            <span class="num">02</span>
-            <span class="label">Avantages</span>
-          </div>
-          <div class="steps-progress-item" data-step="3" data-active="false">
-            <span class="num">03</span>
-            <span class="label">Renouvellement</span>
-          </div>
-        </div>
-
-        <!-- DROITE — cartes empilées -->
-        <div class="steps-stack" id="stepsStack" data-phase="1">
-
-          <article class="step-card" data-step="1">
-            <div class="step-card-num">01</div>
-            <span class="step-card-eyebrow">Étape 01</span>
-            <h3>Activez votre accès</h3>
-            <p>Deux façons d'activer votre statut partenaire, au choix&nbsp;:</p>
-            <div class="step-card-ways">
-              <div class="step-way">
-                <span class="step-way-ico" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M4 6 H20 V18 H4 Z"></path>
-                    <circle cx="9" cy="12" r="2"></circle>
-                    <path d="M13 11 H17 M13 14 H16"></path>
-                  </svg>
-                </span>
-                <span class="step-way-text">Depuis votre espace Mon compte Primo Gardex</span>
-              </div>
-              <div class="step-way">
-                <span class="step-way-ico" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="12" cy="8" r="4"></circle>
-                    <path d="M4 20 a8 8 0 0 1 16 0"></path>
-                  </svg>
-                </span>
-                <span class="step-way-text">Ou contactez votre interlocuteur dédié <span title="À confirmer">[à confirmer]</span></span>
-              </div>
-            </div>
-            <div class="step-card-foot">Activation rapide</div>
-          </article>
-
-          <article class="step-card" data-step="2">
-            <div class="step-card-num">02</div>
-            <span class="step-card-eyebrow">Étape 02</span>
-            <h3>Profitez de vos avantages</h3>
-            <p>Vos conditions s'appliquent sur tous vos projets Primo Gardex, au rythme de vos chantiers.</p>
-            <div class="step-card-chips">
-              <span class="step-chip">15 % de remise</span>
-              <span class="step-chip">Prix bloqués 3 mois</span>
-              <span class="step-chip">Support dédié</span>
-            </div>
-            <div class="step-card-foot">Au rythme de vos chantiers</div>
-          </article>
-
-          <article class="step-card" data-step="3">
-            <div class="step-card-num">03</div>
-            <span class="step-card-eyebrow">Étape 03</span>
-            <h3>Renouvelez votre statut</h3>
-            <p>3 commandes sur l'année suffisent à reconduire votre statut et à prolonger vos avantages pour 12 mois.</p>
-            <div class="step-highlight">
-              <span class="step-highlight-num">3</span>
-              <span class="step-highlight-text">commandes<br>sur l'année</span>
-            </div>
-            <div class="step-card-foot">Reconductible chaque année</div>
-          </article>
-
-        </div>
-
-        </div>
-
-      </div>
+    <div class="process-head-inline reveal">
+      <span class="eyebrow">Les conditions</span>
+      <h2>Un cadre qui vit <em>dans la durée.</em></h2>
+      <p>Un statut valable 1 an, reconductible avec 3 commandes sur l'année.</p>
     </div>
-  </div>
 
+    <!-- 3 étapes en une seule vue (plus de scroll figé) -->
+    <ol class="cond-steps reveal">
+
+      <li class="cond-card">
+        <span class="cond-num">01</span>
+        <span class="cond-eyebrow">Activation</span>
+        <h3>Activez votre accès</h3>
+        <p>Deux façons d'activer votre statut partenaire&nbsp;:</p>
+        <div class="cond-ways">
+          <span class="cond-way">
+            <span class="cond-way-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 6 H20 V18 H4 Z"></path><path d="M4 7 L12 13 L20 7"></path></svg>
+            </span>
+            Par mail
+          </span>
+          <span class="cond-way">
+            <span class="cond-way-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 5 H20 V16 H9 L5 20 V16 H4 Z"></path><path d="M8 10 H8.01 M12 10 H12.01 M16 10 H16.01"></path></svg>
+            </span>
+            Ou via le chatbot
+          </span>
+        </div>
+      </li>
+
+      <li class="cond-card">
+        <span class="cond-num">02</span>
+        <span class="cond-eyebrow">Avantages</span>
+        <h3>Profitez de vos avantages</h3>
+        <p>Vos conditions s'appliquent sur tous vos projets, au rythme de vos chantiers.</p>
+        <div class="cond-chips">
+          <span class="cond-chip">−15 % de remise</span>
+          <span class="cond-chip">Prix bloqués 3 mois</span>
+          <span class="cond-chip">Support dédié</span>
+        </div>
+      </li>
+
+      <li class="cond-card cond-card--accent">
+        <span class="cond-num">03</span>
+        <span class="cond-eyebrow">Renouvellement</span>
+        <h3>Renouvelez votre statut</h3>
+        <p>3 commandes sur l'année suffisent à prolonger vos avantages pour 12 mois.</p>
+        <div class="cond-highlight">
+          <span class="cond-highlight-num">3</span>
+          <span class="cond-highlight-text">commandes<br>sur l'année</span>
+        </div>
+      </li>
+
+    </ol>
+  </div>
 </section>
 
 <!-- ============== CTA DE CLÔTURE ============== -->
@@ -661,8 +621,8 @@
   <div class="container">
     <span class="final-cta-brand">
       <span class="brand-logo">
-        <img src="images/logo-primo-gardex.png" alt="Primo Gardex"
-             width="30" height="30"
+        <img src="images/logo-primo-gardex-clean.png" alt="Primo Gardex"
+             height="26"
              onerror="this.onerror=null;this.outerHTML='<span style=&quot;color:#fff&quot;>Primo Gardex</span>'">
       </span>
       Cercle Partenaire
@@ -675,7 +635,7 @@
       Mon compte Primo Gardex
       <span class="arrow">→</span>
     </a>
-    <span class="final-cta-hint">Statut partenaire · activation depuis votre espace client</span>
+    <span class="final-cta-hint">Statut partenaire · activation par mail ou via le chatbot</span>
     <div class="final-cta-features">
       <span class="final-cta-feature">Statut valable 1 an</span>
       <span class="final-cta-feature">3 commandes pour prolonger vos avantages</span>
