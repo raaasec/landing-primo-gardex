@@ -71,10 +71,10 @@ flipCards.forEach(card => {
     const scrolled = Math.max(0, Math.min(total, -rect.top));
     const progress = total > 0 ? scrolled / total : 0;
 
-    // Trois phases distinctes avec une petite zone d'ease aux seuils
+    // Trois phases : seuils calés pour occuper toute la runway (pas de scroll mort en fin)
     let phase = 1;
-    if (progress > 0.62) phase = 3;
-    else if (progress > 0.30) phase = 2;
+    if (progress > 0.70) phase = 3;
+    else if (progress > 0.34) phase = 2;
     stack.dataset.phase = phase;
 
     // Hauteur de la barre de progression — 0%, ~50%, 100%

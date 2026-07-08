@@ -156,7 +156,7 @@ function initViewer(root) {
 
   const camera = new THREE.PerspectiveCamera(
     40, stage.clientWidth / stage.clientHeight, 0.1, 100);
-  camera.position.set(3.3, 1.85, 3.9);   // vue 3/4 plongeante sur l'angle du balcon
+  camera.position.set(2.1, 1.7, 4.3);   // vue frontale légèrement 3/4, plongeante sur le balcon
 
   /* --- Lumières : ciel doux + clé chaude (ombres) + remplissage froid --- */
   scene.add(new THREE.HemisphereLight(0xf3efe6, 0xcbc5b9, 0.9));
@@ -181,13 +181,13 @@ function initViewer(root) {
   controls.enableDamping = true;
   controls.dampingFactor = 0.08;
   controls.enablePan = false;
-  controls.minDistance = 2.9;
-  controls.maxDistance = 6.5;
+  controls.minDistance = 3.0;
+  controls.maxDistance = 7.0;
   controls.minPolarAngle = 0.42;
   controls.maxPolarAngle = Math.PI * 0.49;   // reste au-dessus du sol du balcon
-  controls.target.set(0.1, 0.5, 0.05);
+  controls.target.set(0, 0.55, -0.15);
   controls.autoRotate = !prefersReduced;
-  controls.autoRotateSpeed = 0.5;
+  controls.autoRotateSpeed = 0.45;
   // Vertical = scroll page, horizontal = rotation (voir touch-action CSS)
 
   /* --- Construction du garde-corps de balcon d'angle (façade + retour latéral) --- */
@@ -263,17 +263,41 @@ function initViewer(root) {
   kick.position.set(0, 0.075, frontZ);
   kick.castShadow = true; group.add(kick);
 
-  // RETOUR LATÉRAL — le long de Z, au bord droit (x = hx). j=0 = poteau d'angle déjà posé.
-  for (let j = 1; j <= SIDE_BAYS; j++) addPost(hx, frontZ - j * BAY);
-  for (let j = 0; j < SIDE_BAYS; j++) addPanel(hx + 0.012, frontZ - j * BAY - BAY / 2, true);
-  const railS = new THREE.Mesh(new THREE.BoxGeometry(0.13, 0.06, SPANZ + 0.06), metalMat);
-  railS.position.set(hx + 0.012, RAIL_H + 0.005, frontZ - SPANZ / 2);
-  railS.castShadow = true; group.add(railS);
-  const kickS = new THREE.Mesh(new THREE.BoxGeometry(0.09, 0.05, SPANZ), metalMat);
-  kickS.position.set(hx, 0.075, frontZ - SPANZ / 2);
-  kickS.castShadow = true; group.add(kickS);
+  // RETOURS LATÉRAUX — le long de Z, aux DEUX bords (x = ±hx) : effet balcon en U
+  for (const sx of [hx, -hx]) {
+    const off = 0.012 * Math.sign(sx);
+    for (let j = 1; j <= SIDE_BAYS; j++) addPost(sx, frontZ - j * BAY);   // j=0 = poteau d'angle déjà posé
+    for (let j = 0; j < SIDE_BAYS; j++) addPanel(sx + off, frontZ - j * BAY - BAY / 2, true);
+    const rS = new THREE.Mesh(new THREE.BoxGeometry(0.13, 0.06, SPANZ + 0.06), metalMat);
+    rS.position.set(sx + off, RAIL_H + 0.005, frontZ - SPANZ / 2);
+    rS.castShadow = true; group.add(rS);
+    const kS = new THREE.Mesh(new THREE.BoxGeometry(0.09, 0.05, SPANZ), metalMat);
+    kS.position.set(sx, 0.075, frontZ - SPANZ / 2);
+    kS.castShadow = true; group.add(kS);
+  }
 
-  // Applique une texture de motif à tous les panneaux (façade + retour)
+  // FAÇADE D'IMMEUBLE au fond (contexte architectural) + baie vitrée : lève l'ambiguïté « balcon »
+  const wallZ = frontZ - SPANZ - 0.06;
+  const WALL_H = 1.95;
+  const wallMat = new THREE.MeshStandardMaterial({ color: 0xece9e2, roughness: 0.97, metalness: 0.0 });
+  const wall = new THREE.Mesh(new THREE.BoxGeometry(SPANX + 0.5, WALL_H, 0.12), wallMat);
+  wall.position.set(0, WALL_H / 2 - SLAB_H, wallZ);
+  wall.receiveShadow = true; wall.castShadow = true;
+  group.add(wall);
+  // Baie vitrée sombre encastrée + cadre
+  const bayW = SPANX * 0.52, bayH = WALL_H * 0.8;
+  const bayFrame = new THREE.Mesh(new THREE.BoxGeometry(bayW + 0.07, bayH + 0.07, 0.05), metalMat);
+  bayFrame.position.set(0, bayH / 2, wallZ + 0.05);
+  group.add(bayFrame);
+  const glassMat = new THREE.MeshStandardMaterial({ color: 0x9fb1bd, roughness: 0.1, metalness: 0.65, emissive: 0x2a3540, emissiveIntensity: 0.25 });
+  const bay = new THREE.Mesh(new THREE.PlaneGeometry(bayW, bayH), glassMat);
+  bay.position.set(0, bayH / 2, wallZ + 0.078);
+  group.add(bay);
+  const mullion = new THREE.Mesh(new THREE.BoxGeometry(0.04, bayH, 0.03), metalMat);
+  mullion.position.set(0, bayH / 2, wallZ + 0.085);
+  group.add(mullion);
+
+  // Applique une texture de motif à tous les panneaux (façade + retours)
   function applyMotif(tex) {
     const ratio = panelW / panelH;     // garde des cellules ~carrées
     tex.repeat.set(ratio, 1);

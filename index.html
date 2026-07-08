@@ -62,24 +62,19 @@
         <div class="hero-meta">Statut valable 1 an · 3 commandes pour prolonger vos avantages</div>
       </div>
 
-      <!-- COLONNE DROITE — image hero unique + signature de marque -->
+      <!-- COLONNE DROITE — image hero unique, signature de marque intégrée -->
       <div class="hero-visual">
-        <div class="hero-accent-line" aria-hidden="true"></div>
-
         <div class="hero-photo">
           <img src="images/gc-terrasse.jpg" loading="eager"
                alt="Garde-corps de terrasse Primo Gardex, remplissage décoratif ajouré">
-          <div class="hero-photo-caption">
-            <span>Garde-corps de terrasse</span>
-            <span class="ref">Remplissage décoratif ajouré</span>
-          </div>
-        </div>
+          <span class="hero-photo-tag">Garde-corps de terrasse · remplissage ajouré</span>
 
-        <!-- Signature de marque premium (logo nettoyé, sans cadre, sur carte sombre) -->
-        <a class="hero-brand-card" href="https://primo-gardex.com/" aria-label="Primo Gardex — accueil">
-          <img class="hero-brand-logo" src="images/logo-primo-gardex-clean.png" alt="Primo Gardex">
-          <span class="hero-brand-meta">Marque de Dampere</span>
-        </a>
+          <!-- Signature de marque premium (glassmorphism, logo nettoyé sans cadre) -->
+          <a class="hero-brand-sign" href="https://primo-gardex.com/" aria-label="Primo Gardex — accueil">
+            <img class="hero-brand-logo" src="images/logo-primo-gardex-clean.png" alt="Primo Gardex">
+            <span class="hero-brand-meta">Marque de Dampere</span>
+          </a>
+        </div>
       </div>
 
     </div>
@@ -99,36 +94,35 @@
           Vous le configurez en ligne, nous le fabriquons en usine et le livrons prêt à poser — pour vos projets résidentiels, collectifs et ERP.
         </p>
 
-        <ul class="ctx2-features" aria-label="La solution en cinq points">
-          <li class="ctx2-feature">
+        <!-- 4 cartes essentielles (composition équilibrée) -->
+        <ul class="ctx2-cards" aria-label="La solution en quatre points">
+          <li class="ctx2-card">
             <span class="ctx2-ico" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M3 8 L21 8 L21 16 L3 16 Z"></path><path d="M7 8 L7 12 M11 8 L11 13 M15 8 L15 12 M19 8 L19 13"></path></svg>
             </span>
-            <span class="ctx2-feature-label">Sur mesure</span>
+            <span class="ctx2-card-title">Sur mesure</span>
+            <span class="ctx2-card-sub">Dimensions &amp; pose au projet</span>
           </li>
-          <li class="ctx2-feature">
+          <li class="ctx2-card">
             <span class="ctx2-ico" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M12 3 L20 7 L20 17 L12 21 L4 17 L4 7 Z"></path><path d="M4 7 L12 11 L20 7 M12 11 L12 21"></path></svg>
             </span>
-            <span class="ctx2-feature-label">Prêt à poser</span>
+            <span class="ctx2-card-title">Prêt à poser</span>
+            <span class="ctx2-card-sub">Livré monté, fixations incluses</span>
           </li>
-          <li class="ctx2-feature">
-            <span class="ctx2-ico" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M12 3 C 12 3 6 10 6 14 a6 6 0 0 0 12 0 C 18 10 12 3 12 3 Z"></path></svg>
-            </span>
-            <span class="ctx2-feature-label">Thermolaqué RAL</span>
-          </li>
-          <li class="ctx2-feature">
+          <li class="ctx2-card">
             <span class="ctx2-ico" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M4 7 H20 M4 12 H20 M4 17 H20"></path><circle cx="9" cy="7" r="2"></circle><circle cx="15" cy="12" r="2"></circle><circle cx="8" cy="17" r="2"></circle></svg>
             </span>
-            <span class="ctx2-feature-label">Configurable en ligne</span>
+            <span class="ctx2-card-title">Configurateur</span>
+            <span class="ctx2-card-sub">Chiffrage en ligne</span>
           </li>
-          <li class="ctx2-feature">
+          <li class="ctx2-card">
             <span class="ctx2-ico" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M3 21 L3 10 L9 13 L9 10 L15 13 L15 10 L21 13 L21 21 Z"></path></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 3 C 12 3 6 10 6 14 a6 6 0 0 0 12 0 C 18 10 12 3 12 3 Z"></path></svg>
             </span>
-            <span class="ctx2-feature-label">Fabriqué en usine</span>
+            <span class="ctx2-card-title">Thermolaqué RAL</span>
+            <span class="ctx2-card-sub">Teinte au choix, durable</span>
           </li>
         </ul>
 
@@ -553,64 +547,90 @@
   </div>
 </section>
 
-<!-- ============== CONDITIONS (étapes au scroll) ============== -->
-<section class="process section-screen section-snap" id="conditions">
-  <div class="container">
+<!-- ============== CONDITIONS (pile de cartes sticky, dans le viewport) ============== -->
+<section class="process section-snap" id="conditions">
+  <!-- Intro DANS le viewport figé : sticky immédiat, tout tient en une hauteur écran -->
+  <div class="process-scroll" id="processScroll">
+    <div class="process-pin">
+      <div class="container process-pin-inner">
 
-    <div class="process-head-inline reveal">
-      <span class="eyebrow">Les conditions</span>
-      <h2>Un cadre qui vit <em>dans la durée.</em></h2>
-      <p>Un statut valable 1 an, reconductible avec 3 commandes sur l'année.</p>
+        <div class="process-head-inline reveal">
+          <span class="eyebrow">Les conditions</span>
+          <h2>Un cadre qui vit <em>dans la durée.</em></h2>
+          <p>Un statut valable 1 an, reconductible avec 3 commandes sur l'année.</p>
+        </div>
+
+        <div class="process-pin-row">
+
+          <!-- GAUCHE — progression -->
+          <div class="steps-progress" id="stepsProgress">
+            <div class="steps-progress-fill" id="stepsProgressFill"></div>
+            <div class="steps-progress-item" data-step="1" data-active="true">
+              <span class="num">01</span><span class="label">Activation</span>
+            </div>
+            <div class="steps-progress-item" data-step="2" data-active="false">
+              <span class="num">02</span><span class="label">Avantages</span>
+            </div>
+            <div class="steps-progress-item" data-step="3" data-active="false">
+              <span class="num">03</span><span class="label">Renouvellement</span>
+            </div>
+          </div>
+
+          <!-- DROITE — cartes empilées (pilotées au scroll) -->
+          <div class="steps-stack" id="stepsStack" data-phase="1">
+
+            <article class="step-card" data-step="1">
+              <div class="step-card-num">01</div>
+              <span class="step-card-eyebrow">Étape 01</span>
+              <h3>Activez votre accès</h3>
+              <p>Deux façons d'activer votre statut partenaire&nbsp;:</p>
+              <div class="step-card-ways">
+                <div class="step-way">
+                  <span class="step-way-ico" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M4 6 H20 V18 H4 Z"></path><path d="M4 7 L12 13 L20 7"></path></svg>
+                  </span>
+                  <span class="step-way-text">Par mail</span>
+                </div>
+                <div class="step-way">
+                  <span class="step-way-ico" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M4 5 H20 V16 H9 L5 20 V16 H4 Z"></path><path d="M8 10 H8.01 M12 10 H12.01 M16 10 H16.01"></path></svg>
+                  </span>
+                  <span class="step-way-text">Ou via le chatbot</span>
+                </div>
+              </div>
+              <div class="step-card-foot">Activation rapide</div>
+            </article>
+
+            <article class="step-card" data-step="2">
+              <div class="step-card-num">02</div>
+              <span class="step-card-eyebrow">Étape 02</span>
+              <h3>Profitez de vos avantages</h3>
+              <p>Vos conditions s'appliquent sur tous vos projets, au rythme de vos chantiers.</p>
+              <div class="step-card-chips">
+                <span class="step-chip">−15 % de remise</span>
+                <span class="step-chip">Prix bloqués 3 mois</span>
+                <span class="step-chip">Support dédié</span>
+              </div>
+              <div class="step-card-foot">Au rythme de vos chantiers</div>
+            </article>
+
+            <article class="step-card" data-step="3">
+              <div class="step-card-num">03</div>
+              <span class="step-card-eyebrow">Étape 03</span>
+              <h3>Renouvelez votre statut</h3>
+              <p>3 commandes sur l'année suffisent à prolonger vos avantages pour 12 mois.</p>
+              <div class="step-highlight">
+                <span class="step-highlight-num">3</span>
+                <span class="step-highlight-text">commandes<br>sur l'année</span>
+              </div>
+              <div class="step-card-foot">Reconductible chaque année</div>
+            </article>
+
+          </div>
+        </div>
+
+      </div>
     </div>
-
-    <!-- 3 étapes en une seule vue (plus de scroll figé) -->
-    <ol class="cond-steps reveal">
-
-      <li class="cond-card">
-        <span class="cond-num">01</span>
-        <span class="cond-eyebrow">Activation</span>
-        <h3>Activez votre accès</h3>
-        <p>Deux façons d'activer votre statut partenaire&nbsp;:</p>
-        <div class="cond-ways">
-          <span class="cond-way">
-            <span class="cond-way-ico" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M4 6 H20 V18 H4 Z"></path><path d="M4 7 L12 13 L20 7"></path></svg>
-            </span>
-            Par mail
-          </span>
-          <span class="cond-way">
-            <span class="cond-way-ico" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M4 5 H20 V16 H9 L5 20 V16 H4 Z"></path><path d="M8 10 H8.01 M12 10 H12.01 M16 10 H16.01"></path></svg>
-            </span>
-            Ou via le chatbot
-          </span>
-        </div>
-      </li>
-
-      <li class="cond-card">
-        <span class="cond-num">02</span>
-        <span class="cond-eyebrow">Avantages</span>
-        <h3>Profitez de vos avantages</h3>
-        <p>Vos conditions s'appliquent sur tous vos projets, au rythme de vos chantiers.</p>
-        <div class="cond-chips">
-          <span class="cond-chip">−15 % de remise</span>
-          <span class="cond-chip">Prix bloqués 3 mois</span>
-          <span class="cond-chip">Support dédié</span>
-        </div>
-      </li>
-
-      <li class="cond-card cond-card--accent">
-        <span class="cond-num">03</span>
-        <span class="cond-eyebrow">Renouvellement</span>
-        <h3>Renouvelez votre statut</h3>
-        <p>3 commandes sur l'année suffisent à prolonger vos avantages pour 12 mois.</p>
-        <div class="cond-highlight">
-          <span class="cond-highlight-num">3</span>
-          <span class="cond-highlight-text">commandes<br>sur l'année</span>
-        </div>
-      </li>
-
-    </ol>
   </div>
 </section>
 
