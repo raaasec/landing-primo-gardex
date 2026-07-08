@@ -973,7 +973,7 @@ section.benefits { padding: 120px 0; background: var(--bg-card); }
 /* ============================================================
    PROCESS / CONDITIONS — pile de cartes au scroll
    ============================================================ */
-section.process { background: var(--bg-soft); padding-top: clamp(48px, 7vh, 80px); padding-bottom: clamp(48px, 7vh, 96px); }
+section.process { background: var(--bg-soft); padding: 0; }
 .process-intro { text-align: center; margin-bottom: 24px; max-width: 720px; margin-left: auto; margin-right: auto; padding: 0 32px; }
 .process-intro h2 {
   font-family: var(--serif); font-weight: 700;
@@ -982,16 +982,28 @@ section.process { background: var(--bg-soft); padding-top: clamp(48px, 7vh, 80px
 }
 .process-intro h2 em { font-style: normal; font-weight: 600; color: var(--accent); }
 .process-intro p { font-size: 16px; color: var(--text); max-width: 540px; margin: 0 auto; }
-.process-scroll { position: relative; height: 200vh; } /* Primo : calé ~200vh (3 étapes) pour une sortie naturelle, sans grand vide */
+/* Runway resserrée : ~1 écran de scroll pilote les 3 phases, sans scroll mort */
+.process-scroll { position: relative; height: 175vh; }
 .process-pin {
   position: sticky; top: 0; height: 100vh;
-  display: flex; align-items: flex-start;
-  padding-top: clamp(40px, 8vh, 80px); overflow: hidden;
+  display: flex; align-items: center; overflow: hidden;
 }
+/* Intro + étapes dans le même viewport figé (colonne) */
 .process-pin-inner {
-  display: grid;
-  grid-template-columns: minmax(200px, 260px) minmax(0, 1fr);
-  gap: clamp(40px, 6vw, 80px); align-items: center; width: 100%;
+  display: flex; flex-direction: column; justify-content: center;
+  gap: clamp(16px, 3vh, 30px); width: 100%;
+}
+.process-head-inline { text-align: center; max-width: 720px; margin: 0 auto; }
+.process-head-inline h2 {
+  font-family: var(--serif); font-weight: 700;
+  font-size: clamp(26px, 3.4vw, 40px); line-height: 1.08;
+  letter-spacing: -0.02em; color: var(--ink); margin: 8px 0 8px;
+}
+.process-head-inline h2 em { font-style: normal; font-weight: 600; color: var(--accent); }
+.process-head-inline p { font-size: 15px; color: var(--text); max-width: 540px; margin: 0 auto; }
+.process-pin-row {
+  display: grid; grid-template-columns: minmax(190px, 240px) minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 72px); align-items: center; width: 100%;
 }
 .steps-progress {
   position: relative; padding-left: 22px;
@@ -1034,7 +1046,7 @@ section.process { background: var(--bg-soft); padding-top: clamp(48px, 7vh, 80px
 .steps-progress-item[data-active="true"] .num { color: var(--accent); }
 .steps-stack {
   position: relative; width: 100%;
-  height: clamp(380px, 52vh, 480px); perspective: 1400px;
+  height: clamp(320px, 44vh, 430px); perspective: 1400px;
 }
 .step-card {
   position: absolute; inset: 0;
@@ -1224,11 +1236,70 @@ section.final-cta.final-cta--compact {
    ============================================================ */
 section.uf-context {
   background: var(--bg-card);
-  padding: clamp(56px, 7vw, 96px) 0 clamp(48px, 6vw, 80px);
+  padding: clamp(40px, 5vw, 72px) 0;
   position: relative;
-  /* Section riche : on démarre le contenu en haut pour éviter tout rognage
-     quand il dépasse la hauteur d'écran (override du centrage de .section-screen). */
-  justify-content: flex-start;
+}
+
+/* ===== Contexte compact (bloc .ctx2 : présentation express, 1 écran) ===== */
+.ctx2 {
+  display: grid; grid-template-columns: 1.02fr 0.98fr;
+  gap: clamp(28px, 4vw, 60px); align-items: center;
+}
+.ctx2-text h2 {
+  font-family: var(--serif); font-weight: 700;
+  font-size: clamp(30px, 3.6vw, 46px); line-height: 1.07;
+  letter-spacing: -0.02em; color: var(--ink); margin: 12px 0 16px;
+}
+.ctx2-text h2 em { font-style: normal; font-weight: 600; color: var(--accent); }
+.ctx2-lead {
+  font-size: clamp(15px, 1.15vw, 17px); line-height: 1.6;
+  color: var(--ink-700); max-width: 46ch; margin-bottom: clamp(22px, 3vh, 30px);
+}
+.ctx2-features {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px 18px;
+}
+.ctx2-feature { display: flex; align-items: center; gap: 12px; }
+.ctx2-ico {
+  width: 42px; height: 42px; border-radius: 12px; flex-shrink: 0;
+  background: var(--brand-50); border: 1px solid var(--brand-100);
+  display: flex; align-items: center; justify-content: center;
+}
+.ctx2-ico svg {
+  width: 22px; height: 22px; fill: none; stroke: var(--accent);
+  stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;
+}
+.ctx2-feature-label {
+  font-family: var(--sans); font-size: 14.5px; font-weight: 600;
+  color: var(--ink); line-height: 1.2;
+}
+.ctx2-visual {
+  position: relative; margin: 0; border-radius: var(--r-xl); overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+.ctx2-visual img {
+  width: 100%; height: 100%; max-height: 62vh; aspect-ratio: 4 / 3;
+  object-fit: cover; display: block;
+}
+.ctx2-caption {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  padding: 44px 22px 18px; display: flex; flex-direction: column; gap: 8px;
+  background: linear-gradient(180deg, rgba(26,26,26,0) 0%, rgba(26,26,26,0.80) 100%);
+  color: #fff;
+}
+.ctx2-caption-tag {
+  align-self: flex-start; font-size: 10.5px; font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--ink); background: var(--gold);
+  padding: 4px 10px; border-radius: var(--r-pill);
+}
+.ctx2-caption-title { font-family: var(--serif); font-size: 16px; font-weight: 600; line-height: 1.3; }
+@media (max-width: 860px) {
+  .ctx2 { grid-template-columns: 1fr; gap: 24px; }
+  .ctx2-visual { order: -1; }
+  .ctx2-visual img { max-height: 40vh; }
+}
+@media (max-width: 460px) {
+  .ctx2-features { grid-template-columns: 1fr; gap: 10px; }
 }
 .uf-context-head {
   display: grid; grid-template-columns: 1.05fr 0.95fr;
@@ -1780,8 +1851,8 @@ section.uf-timeline { background: var(--bg-page); padding: clamp(64px, 8vw, 110p
 /* Process : sur mobile on désactive le pin, affichage vertical */
 @media (max-width: 760px) {
   .process-scroll { height: auto; }
-  .process-pin { position: relative; top: auto; height: auto; padding: 16px 0 0; overflow: visible; }
-  .process-pin-inner { grid-template-columns: 1fr; gap: 32px; }
+  .process-pin { position: relative; top: auto; height: auto; padding: 40px 0; overflow: visible; }
+  .process-pin-row { grid-template-columns: 1fr; gap: 28px; }
   .steps-progress {
     flex-direction: row; gap: 0; padding-left: 0; padding-top: 28px;
     justify-content: space-between; max-width: 380px; margin: 0 auto; width: 100%;

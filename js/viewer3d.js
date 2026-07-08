@@ -142,6 +142,11 @@ function initViewer(root) {
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   renderer.setSize(stage.clientWidth, stage.clientHeight);
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.05;
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.domElement.classList.add('gc-canvas');
   renderer.domElement.setAttribute('aria-hidden', 'true');
   stage.appendChild(renderer.domElement);
@@ -150,18 +155,25 @@ function initViewer(root) {
   scene.background = new THREE.Color(CREAM);
 
   const camera = new THREE.PerspectiveCamera(
-    40, stage.clientWidth / stage.clientHeight, 0.1, 100);
-  camera.position.set(2.4, 1.15, 3.3);
+    38, stage.clientWidth / stage.clientHeight, 0.1, 100);
+  camera.position.set(2.7, 1.5, 3.4);   // vue 3/4 légèrement plongeante (architecturale)
 
-  /* --- Lumières douces --- */
-  scene.add(new THREE.HemisphereLight(0xffffff, 0xdfd8cc, 0.85));
-  const amb = new THREE.AmbientLight(0xffffff, 0.35);
-  scene.add(amb);
-  const key = new THREE.DirectionalLight(0xffffff, 1.1);
-  key.position.set(3, 5, 4);
+  /* --- Lumières : ciel doux + clé chaude (ombres) + remplissage froid --- */
+  scene.add(new THREE.HemisphereLight(0xf3efe6, 0xcbc5b9, 0.9));
+  scene.add(new THREE.AmbientLight(0xffffff, 0.22));
+  const key = new THREE.DirectionalLight(0xfff2df, 1.4);
+  key.position.set(3.6, 5.6, 3.2);
+  key.castShadow = true;
+  key.shadow.mapSize.set(1024, 1024);
+  key.shadow.camera.near = 1;
+  key.shadow.camera.far = 18;
+  key.shadow.camera.left = -3.6; key.shadow.camera.right = 3.6;
+  key.shadow.camera.top = 3.6;  key.shadow.camera.bottom = -2;
+  key.shadow.bias = -0.0004;
+  key.shadow.radius = 5;
   scene.add(key);
-  const fill = new THREE.DirectionalLight(0xffffff, 0.35);
-  fill.position.set(-3, 2, -2);
+  const fill = new THREE.DirectionalLight(0xdde6f0, 0.42);
+  fill.position.set(-3.2, 2.2, 1.5);
   scene.add(fill);
 
   /* --- Contrôles --- */
@@ -169,89 +181,98 @@ function initViewer(root) {
   controls.enableDamping = true;
   controls.dampingFactor = 0.08;
   controls.enablePan = false;
-  controls.minDistance = 2.3;
+  controls.minDistance = 2.5;
   controls.maxDistance = 5.5;
-  controls.minPolarAngle = 0.35;
-  controls.maxPolarAngle = Math.PI * 0.52;   // ne passe pas sous le sol
-  controls.target.set(0, 0.55, 0);
+  controls.minPolarAngle = 0.42;
+  controls.maxPolarAngle = Math.PI * 0.49;   // reste au-dessus du sol du balcon
+  controls.target.set(0, 0.5, -0.25);
   controls.autoRotate = !prefersReduced;
-  controls.autoRotateSpeed = 0.7;
+  controls.autoRotateSpeed = 0.55;
   // Vertical = scroll page, horizontal = rotation (voir touch-action CSS)
 
-  /* --- Construction du garde-corps --- */
+  /* --- Construction du garde-corps de balcon --- */
   const group = new THREE.Group();
   scene.add(group);
 
   const BAYS = 3;
-  const BAY_W = 1.15;
-  const SPAN = BAYS * BAY_W;                 // largeur totale
-  const RAIL_H = 1.0;                         // hauteur main courante
-  const POST = 0.06;                          // section montant
-  const BASE_H = 0.16;                        // hauteur base béton
+  const BAY_W = 1.2;
+  const SPAN = BAYS * BAY_W;          // largeur totale ≈ 3.6
+  const RAIL_H = 1.02;                // hauteur garde-corps (norme balcon)
+  const POST = 0.05;                  // montant élancé
+  const DECK_D = 1.5;                 // profondeur de dalle (perspective balcon)
+  const SLAB_H = 0.22;
 
   const metalMat = new THREE.MeshStandardMaterial({
-    color: ANTHRACITE, roughness: 0.55, metalness: 0.35,
+    color: ANTHRACITE, roughness: 0.42, metalness: 0.55,
   });
-  const concreteMat = new THREE.MeshStandardMaterial({
-    color: CONCRETE, roughness: 0.95, metalness: 0.0,
+  const slabMat = new THREE.MeshStandardMaterial({
+    color: CONCRETE, roughness: 0.96, metalness: 0.0,
+  });
+  const deckMat = new THREE.MeshStandardMaterial({
+    color: 0xe8e2d6, roughness: 0.9, metalness: 0.0,
   });
 
-  // Base béton (sous le garde-corps)
-  const base = new THREE.Mesh(
-    new THREE.BoxGeometry(SPAN + 0.3, BASE_H, 0.24), concreteMat);
-  base.position.set(0, -BASE_H / 2, 0);
-  group.add(base);
+  // Dalle béton du balcon : le garde-corps est en z=0, la dalle s'enfonce vers -Z (profondeur)
+  const slab = new THREE.Mesh(
+    new THREE.BoxGeometry(SPAN + 0.5, SLAB_H, DECK_D + 0.1), slabMat);
+  slab.position.set(0, -SLAB_H / 2, -DECK_D / 2 + 0.05);
+  slab.receiveShadow = true;
+  group.add(slab);
 
-  // Montants
+  // Sol du balcon (ton chaud) — reçoit les ombres portées
+  const deck = new THREE.Mesh(
+    new THREE.PlaneGeometry(SPAN + 0.5, DECK_D), deckMat);
+  deck.rotation.x = -Math.PI / 2;
+  deck.position.set(0, 0.002, -DECK_D / 2 + 0.05);
+  deck.receiveShadow = true;
+  group.add(deck);
+
+  // Montants élancés
   for (let i = 0; i <= BAYS; i++) {
     const x = -SPAN / 2 + i * BAY_W;
     const post = new THREE.Mesh(
       new THREE.BoxGeometry(POST, RAIL_H, POST), metalMat);
     post.position.set(x, RAIL_H / 2, 0);
+    post.castShadow = true;
     group.add(post);
   }
 
-  // Main courante
+  // Main courante (léger débord vers l'avant, section marquée)
   const rail = new THREE.Mesh(
-    new THREE.BoxGeometry(SPAN + 0.16, 0.05, 0.09), metalMat);
-  rail.position.set(0, RAIL_H + 0.02, 0);
+    new THREE.BoxGeometry(SPAN + 0.12, 0.06, 0.13), metalMat);
+  rail.position.set(0, RAIL_H + 0.005, 0.012);
+  rail.castShadow = true;
   group.add(rail);
 
-  // Lisse basse (fin liseré au ras de la base)
+  // Lisse basse
   const kick = new THREE.Mesh(
-    new THREE.BoxGeometry(SPAN, 0.04, 0.07), metalMat);
-  kick.position.set(0, 0.05, 0);
+    new THREE.BoxGeometry(SPAN, 0.05, 0.09), metalMat);
+  kick.position.set(0, 0.075, 0);
+  kick.castShadow = true;
   group.add(kick);
 
-  // Panneaux de remplissage (plans) — reçoivent le motif
-  const panelH = RAIL_H - 0.14;
+  // Panneaux ajourés encadrés, légèrement en retrait des montants (profondeur)
+  const panelTop = RAIL_H - 0.06;
+  const panelBottom = 0.11;
+  const panelH = panelTop - panelBottom;
+  const panelW = BAY_W - POST;
   const panelMats = [];
   for (let i = 0; i < BAYS; i++) {
     const x = -SPAN / 2 + i * BAY_W + BAY_W / 2;
     const mat = new THREE.MeshStandardMaterial({
-      color: 0xffffff, roughness: 0.5, metalness: 0.3,
+      color: 0xffffff, roughness: 0.45, metalness: 0.4,
       side: THREE.DoubleSide, transparent: true, alphaTest: 0.5,
     });
     panelMats.push(mat);
     const panel = new THREE.Mesh(
-      new THREE.PlaneGeometry(BAY_W - POST * 0.5, panelH), mat);
-    panel.position.set(x, 0.05 + panelH / 2, 0);
+      new THREE.PlaneGeometry(panelW, panelH), mat);
+    panel.position.set(x, panelBottom + panelH / 2, -0.012);
     group.add(panel);
   }
 
-  // Ombre de contact
-  const shadowTex = makeShadowTexture();
-  const shadow = new THREE.Mesh(
-    new THREE.PlaneGeometry(SPAN + 1.0, 0.9),
-    new THREE.MeshBasicMaterial({ map: shadowTex, transparent: true, depthWrite: false })
-  );
-  shadow.rotation.x = -Math.PI / 2;
-  shadow.position.set(0, -BASE_H - 0.001, 0);
-  group.add(shadow);
-
   // Applique une texture de motif à tous les panneaux
   function applyMotif(tex) {
-    const ratio = (BAY_W - POST * 0.5) / panelH;     // garde des cellules ~carrées
+    const ratio = panelW / panelH;     // garde des cellules ~carrées
     tex.repeat.set(ratio, 1);
     panelMats.forEach(m => { m.map = tex; m.needsUpdate = true; });
   }
