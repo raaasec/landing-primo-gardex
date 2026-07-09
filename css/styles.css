@@ -556,6 +556,23 @@ section.dual-angles {
 }
 @keyframes tppmeShimmer { from { left: -70%; opacity: .9; } to { left: 130%; opacity: 0; } }
 
+/* Motif Primo Gardex en filigrane, sur les cartes claires uniquement.
+   ::after et non ::before : ::before porte déjà le shimmer de survol.
+   La carte accent (fond noir) est exclue : le motif y serait illisible et
+   son animation doit rester intacte.
+   Pas de mix-blend-mode : il crée un contexte d'empilement qui parasite le
+   survol. Une simple opacité suffit sur un fond clair. */
+.tppme-item:not(.tppme-item--accent)::after {
+  content: ""; position: absolute; inset: 0; z-index: 0;
+  pointer-events: none;
+  background: url("../Motifs/ARCHIPEL-par-Dampere.jpg") right bottom / 62% no-repeat;
+  opacity: 0.05;
+  -webkit-mask-image: radial-gradient(115% 100% at 100% 100%, #000 0%, transparent 72%);
+          mask-image: radial-gradient(115% 100% at 100% 100%, #000 0%, transparent 72%);
+}
+/* Le contenu repasse au-dessus du filigrane (le shimmer reste en z-index 1). */
+.tppme-item:not(.tppme-item--accent) > * { position: relative; z-index: 2; }
+
 /* Ligne d'en-tête : icône à gauche, titre à droite */
 .tppme-item-head {
   display: flex; align-items: center; gap: 14px; margin-bottom: 12px;
