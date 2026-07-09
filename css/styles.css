@@ -1076,7 +1076,11 @@ section.process { background: var(--bg-soft); }
 .process-intro p { font-size: 16px; color: var(--text); max-width: 540px; margin: 0 auto; }
 /* Runway resserrée : ~1 écran de scroll pilote les 3 phases, sans scroll mort */
 /* Runway resserrée : ~1/2 écran de scroll pilote les 3 phases (sticky sans scroll mort) */
-.process-scroll { position: relative; height: 150vh; }
+/* Course du scroll « pinné » : 135vh = 100vh figés + 35vh de course utile.
+   Réduite depuis 150vh, où la dernière carte arrivait à 70% et laissait
+   ~135px de scroll sans rien à voir. Les seuils JS (script.js) sont calés
+   sur cette course : la carte 03 arrive près de la fin. */
+.process-scroll { position: relative; height: 135vh; }
 .process-pin {
   position: sticky; top: 0; height: 100vh;
   display: flex; align-items: center; overflow: hidden;
@@ -2088,35 +2092,53 @@ input:focus-visible, [tabindex]:focus-visible {
 }
 
 /* ============================================================
-   HAUTEUR ÉCRAN & CONFORT DE SCROLL (sections immersives)
-   - .section-screen : sections "plein écran" (min-height dvh + centrage vertical)
-   - .section-roomy  : sections longues qui respirent (padding généreux)
-   - scroll-snap léger (proximity), desktop uniquement, sections courtes
-   La section #conditions (scroll "pinned" 280vh) n'est PAS concernée.
+   HAUTEURS SECTIONS — desktop ≥769px
+   - min-height (jamais height fixe) : la section grandit si le contenu
+     dépasse, donc rien n'est jamais rogné.
+   - 92vh au lieu de 100vh : les ~8% restants laissent entrevoir la section
+     suivante, ce qui signale qu'on peut scroller.
+   - svh (et non dvh) : dvh « saute » quand la barre d'URL mobile se replie.
+     vh est déclaré avant comme repli pour les navigateurs anciens.
+   - Contenu centré verticalement (justify-content: center).
    ============================================================ */
 :root { --header-offset: 0px; } /* aucun header fixe actif → 0 ; à ajuster si la DSI en ajoute un */
 
 .section-screen {
-  min-height: 100vh;                                  /* fallback navigateurs anciens */
-  min-height: calc(100dvh - var(--header-offset));    /* hauteur visible réelle (mobile-safe) */
-  display: flex; flex-direction: column; justify-content: center; /* centrage vertical si la section est courte */
-  padding-block: clamp(48px, 7vh, 96px);
+  display: flex; flex-direction: column; justify-content: center;
+  padding-block: clamp(48px, 6vh, 96px);
 }
 /* Sections longues : on ne bloque pas la hauteur, on aère */
 .section-roomy { padding-block: clamp(64px, 9vh, 120px); }
 
-/* Hero : titre court → contenu centré verticalement (une partie = un écran). */
+@media (min-width: 769px) {
+  .section-screen {
+    min-height: calc(92vh - var(--header-offset));   /* repli */
+    min-height: calc(92svh - var(--header-offset));
+  }
+  /* Hero et CTA final : plein écran assumé (image de fond pleine hauteur). */
+  .hero.section-screen,
+  .final-cta.section-screen {
+    min-height: calc(100vh - var(--header-offset));
+    min-height: calc(100svh - var(--header-offset));
+  }
+}
 
-/* Scroll snap léger — desktop uniquement, "proximity" = non bloquant */
+/* Scroll snap léger — desktop uniquement, "proximity" = non bloquant.
+   Retiré des sections plus hautes qu'un écran (voir .section-tall) :
+   snapper une section qu'on ne peut pas voir d'un coup rend le scroll pénible. */
 @media (min-width: 900px) {
   html { scroll-snap-type: y proximity; }
   .section-snap { scroll-snap-align: start; scroll-margin-top: var(--header-offset); }
+  .section-tall { scroll-snap-align: none; }
 }
 
-/* Mobile : hero plein écran (svh), autres sections respirantes mais non bloquées */
+/* ============================================================
+   OVERRIDES MOBILE ≤768px
+   Le contenu pilote la hauteur : pas de « une section = un écran ».
+   ============================================================ */
 @media (max-width: 768px) {
   .section-screen { min-height: auto; padding-block: 56px; }
-  .hero.section-screen { min-height: 100svh; }
+  .hero.section-screen { min-height: 100vh; min-height: 100svh; }
 }
 
 /* Préférence "mouvement réduit" : pas de scroll animé ni de snap */
