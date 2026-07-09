@@ -118,3 +118,91 @@ flipCards.forEach(card => {
   if (mql.addEventListener) mql.addEventListener('change', applyMobileFallback);
   applyMobileFallback();
 })();
+
+/* ===== Carrousels mobiles — points de pagination (dots) =====
+   Sous chaque slider horizontal : une rangée de points synchronisés au scroll.
+   Clic + flèches clavier pour naviguer. Masqués sur desktop (CSS).
+   Aucune modification du HTML source : les dots sont créés ici. */
+(function () {
+  const SLIDERS = [
+    { grid: '.ctx2-cards',        item: '.ctx2-card',    label: 'cartes de présentation' },
+    { grid: '.tppme-grid',        item: '.tppme-item',   label: 'avantages' },
+    { grid: '.uf-renders-grid',   item: '.uf-render-card', label: 'motifs' },
+    { grid: '.realisations-grid', item: '.real-card',    label: 'réalisations' }
+  ];
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  SLIDERS.forEach(cfg => {
+    const grid = document.querySelector(cfg.grid);
+    if (!grid) return;
+    const cards = Array.prototype.slice.call(grid.querySelectorAll(':scope > ' + cfg.item));
+    if (cards.length < 2) return;
+
+    // Conteneur de points
+    const dots = document.createElement('div');
+    dots.className = 'slider-dots';
+    dots.setAttribute('role', 'group');
+    dots.setAttribute('aria-label', 'Pagination : ' + cfg.label);
+
+    let current = -1;
+
+    // Centre la carte i dans le slider (respecte prefers-reduced-motion)
+    function scrollToCard(i) {
+      const sRect = grid.getBoundingClientRect();
+      const cRect = cards[i].getBoundingClientRect();
+      const delta = (cRect.left + cRect.width / 2) - (sRect.left + sRect.width / 2);
+      grid.scrollTo({ left: grid.scrollLeft + delta, behavior: reduceMotion ? 'auto' : 'smooth' });
+    }
+
+    const buttons = cards.map((card, i) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'slider-dot';
+      b.setAttribute('aria-label', 'Aller à l’élément ' + (i + 1) + ' sur ' + cards.length);
+      b.addEventListener('click', () => scrollToCard(i));
+      b.addEventListener('keydown', (e) => {
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        e.preventDefault();
+        const n = Math.max(0, Math.min(cards.length - 1, current + (e.key === 'ArrowRight' ? 1 : -1)));
+        scrollToCard(n);
+        buttons[n].focus();
+      });
+      dots.appendChild(b);
+      return b;
+    });
+
+    grid.insertAdjacentElement('afterend', dots);
+
+    function setActive(i) {
+      if (i === current) return;
+      current = i;
+      buttons.forEach((b, k) => {
+        if (k === i) b.setAttribute('aria-current', 'true');
+        else b.removeAttribute('aria-current');
+      });
+    }
+
+    // Index de la carte la plus proche du centre du slider
+    function activeIndex() {
+      const sRect = grid.getBoundingClientRect();
+      const sCenter = sRect.left + sRect.width / 2;
+      let best = 0, bestDist = Infinity;
+      cards.forEach((c, i) => {
+        const r = c.getBoundingClientRect();
+        const d = Math.abs((r.left + r.width / 2) - sCenter);
+        if (d < bestDist) { bestDist = d; best = i; }
+      });
+      return best;
+    }
+
+    let raf = 0;
+    function sync() {
+      if (raf) return;
+      raf = requestAnimationFrame(() => { raf = 0; setActive(activeIndex()); });
+    }
+    grid.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync);
+
+    setActive(0);
+  });
+})();

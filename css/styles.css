@@ -2294,3 +2294,102 @@ a:hover { color: var(--gold-deep); }
   .realisations-grid .real-card { flex-basis: 82%; }
   .gc-stage { max-height: 40vh; }
 }
+
+/* ============================================================
+   PASSE MOBILE — chevauchements, dots, boutons (≤ 768px)
+   Ajouts uniquement sous media query : le rendu DESKTOP est INCHANGÉ.
+   Pas de !important, spécificité basse.
+   ============================================================ */
+
+/* ---- Problème 1 : badge « Marque de Dampere » chevauchait le tag ----
+   Sur mobile, la signature (haut-droite) et le tag « Garde-corps… »
+   (haut-gauche) se télescopaient. On garde la signature en haut-droite
+   mais réduite, et on descend le tag en bas-gauche : plus de collision. */
+@media (max-width: 768px) {
+  .hero-brand-sign { top: 14px; right: 14px; padding: 12px 16px 10px; gap: 6px; }
+  .hero-brand-logo { width: 108px; max-width: 34vw; }
+  .hero-photo-tag  { top: auto; bottom: 14px; left: 14px; }
+}
+
+/* ---- Problème 2 : garde-fou anti-débordement horizontal ----
+   On limite SEULEMENT la largeur (max-width). On NE force PAS height:auto :
+   beaucoup d'images du projet utilisent height:100% + object-fit:cover
+   (hero, contexte, réalisations, motifs) — un height:auto les déformerait.
+   L'image « prêt à poser » (.ctx2-visual img) est déjà contenue et centrée. */
+@media (max-width: 768px) {
+  img { max-width: 100%; }
+
+  /* Correctif débordement du bloc contexte : en grille colonne unique, la piste
+     1fr prenait la taille min-content de ses enfants (min-width:auto par défaut)
+     -> le texte et surtout l'image « prêt à poser » débordaient à droite.
+     min-width:0 autorise la piste à se limiter à la largeur de l'écran. */
+  .ctx2 { grid-template-columns: minmax(0, 1fr); }
+  .ctx2-text, .ctx2-visual { min-width: 0; }
+}
+
+/* ---- Problème 3 : points de pagination (dots) des carrousels ----
+   Les dots sont générés en JS sous chaque slider horizontal.
+   Classe nouvelle : masquée par défaut -> invisible sur desktop
+   (rendu desktop pixel-identique). Visible seulement en mobile. */
+.slider-dots { display: none; }
+
+@media (max-width: 768px) {
+  .slider-dots {
+    display: flex; justify-content: center; align-items: center;
+    gap: 6px; margin: 14px 0 0; padding: 0; list-style: none;
+  }
+  /* Zone cliquable 24x24 (WCAG 2.2 SC 2.5.8) ; point visuel 8px au centre */
+  .slider-dot {
+    width: 24px; height: 24px; padding: 0;
+    border: 0; background: none; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .slider-dot::before {
+    content: ""; width: 8px; height: 8px; border-radius: 50%;
+    background: rgba(26, 26, 26, 0.24);
+    transition: background .25s var(--ease), transform .25s var(--ease);
+  }
+  /* Actif : distingué par la COULEUR (or) ET la TAILLE (jamais la couleur seule) */
+  .slider-dot[aria-current="true"]::before {
+    background: var(--gold); transform: scale(1.5);
+  }
+  .slider-dot:focus-visible {
+    outline: 2px solid var(--gold-deep); outline-offset: 1px; border-radius: 50%;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .slider-dot::before { transition: none; }
+  }
+}
+
+/* ---- Problème 4 : hero — CTA primaire plein + lien secondaire discret ----
+   Empilage dès 768px (avant : seulement ≤520px). Primaire pleine largeur
+   ≥48px ; « Voir les conditions » devient un lien souligné centré (pas un
+   2e bouton concurrent). Scopé à .hero-cta-row -> autres boutons intacts.
+   Les couleurs restent inchangées (primaire noir/blanc = contraste OK). */
+@media (max-width: 768px) {
+  .hero-cta-row {
+    flex-direction: column; align-items: stretch;
+    gap: 10px; width: 100%;
+  }
+  .hero-cta-row .btn-primary {
+    width: 100%; justify-content: center; min-height: 48px;
+  }
+  .hero-cta-row .btn-ghost {
+    align-self: center; width: auto; min-height: 44px;
+    border: 0; background: none; padding: 10px 12px;
+    color: var(--ink);
+    text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px;
+  }
+}
+
+/* ---- Problème 5 : safe-area (encoches) sur les bords du conteneur ----
+   viewport-fit=cover laisse le contenu aller sous l'encoche (paysage).
+   Le conteneur garde 20px de marge, élargie seulement si une encoche existe.
+   Pas de barre fixe/collée sur cette page -> c'est l'application utile ici. */
+@media (max-width: 768px) {
+  .container {
+    padding-left: max(20px, env(safe-area-inset-left));
+    padding-right: max(20px, env(safe-area-inset-right));
+  }
+}
