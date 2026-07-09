@@ -269,6 +269,12 @@
         <span class="gc-hint" id="gcHint" aria-hidden="true">Faites glisser pour tourner</span>
       </div>
 
+      <!-- Filet de sécurité : affiché seulement si le contexte 3D est perdu
+           et que le navigateur ne le restaure pas de lui-même. -->
+      <button type="button" class="gc-reload" id="gcReload" hidden>
+        Relancer la vue 3D
+      </button>
+
       <!-- Choix du motif (seul contrôle de la page) -->
       <div class="gc-motifs" role="group" aria-label="Choix du motif de remplissage" id="gcMotifs">
         <button type="button" class="gc-motif" aria-pressed="true"

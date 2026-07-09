@@ -1745,6 +1745,20 @@ section.uf-custom {
 }
 
 /* Boutons de motif */
+/* Bouton de secours : relance le viewer sans recharger la page.
+   [hidden] est neutralisé par display:flex -> on le rétablit explicitement. */
+.gc-reload {
+  display: flex; align-items: center; justify-content: center;
+  margin: 14px auto 0; min-height: 44px; padding: 10px 18px;
+  font-family: var(--sans); font-size: 14px; font-weight: 600;
+  color: var(--ink); background: var(--bg-card);
+  border: 1px solid var(--line-soft); border-radius: 999px;
+  cursor: pointer; transition: border-color .3s var(--ease), background .3s var(--ease);
+}
+.gc-reload[hidden] { display: none; }
+.gc-reload:hover { border-color: var(--gold); background: var(--bg-page); }
+.gc-reload:focus-visible { outline: 2px solid var(--gold-deep); outline-offset: 2px; }
+
 .gc-motifs {
   display: flex; flex-wrap: wrap; gap: 10px;
   justify-content: center; margin: 18px 0 6px;

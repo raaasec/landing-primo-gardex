@@ -24,6 +24,10 @@ const MOTIFS = [
   { name: 'Archipel',  src: 'Motifs/ARCHIPEL-par-Dampere.jpg' },
 ];
 
+/* Dernier motif choisi : survit à un remontage (contexte perdu, retour bfcache)
+   pour ne pas ramener l'utilisateur sur Atlantide sans raison. */
+let lastMotifSrc = null;
+
 /* --- Charte --- */
 const ANTHRACITE = 0x2f3436;   // tôle garde-corps
 const CONCRETE   = 0xcac6bd;   // base béton gris clair
@@ -114,12 +118,18 @@ function makeShadowTexture() {
 /* ============================================================
    Visualiseur
    ============================================================ */
-function initViewer(root) {
+function initViewer(root, hooks = {}) {
   const stage    = root.querySelector('#gcStage');
   const loading  = root.querySelector('#gcLoading');
   const fallback = root.querySelector('#gcFallback');
   const hint     = root.querySelector('#gcHint');
   const motifBtns = Array.from(root.querySelectorAll('.gc-motif'));
+
+  // Remontage possible : on repart toujours de l'état « chargement ».
+  window.__gcReady = false;
+  if (loading) { loading.textContent = 'Chargement du modèle 3D…'; loading.hidden = false; }
+  if (hint) hint.hidden = false;
+  if (fallback) fallback.hidden = true;
 
   /* --- Détection WebGL : sinon repli propre --- */
   function webglAvailable() {
@@ -136,8 +146,9 @@ function initViewer(root) {
     if (hint) hint.hidden = true;
     if (fallback) fallback.hidden = false;
     motifBtns.forEach(b => { b.disabled = true; b.setAttribute('aria-disabled', 'true'); });
-    return; // pas de 3D
+    return { dispose() {}, webgl: false }; // pas de 3D
   }
+  motifBtns.forEach(b => { b.disabled = false; b.removeAttribute('aria-disabled'); });
 
   /* --- Renderer / scène / caméra --- */
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
@@ -151,6 +162,21 @@ function initViewer(root) {
   renderer.domElement.classList.add('gc-canvas');
   renderer.domElement.setAttribute('aria-hidden', 'true');
   stage.appendChild(renderer.domElement);
+
+  /* --- Perte du contexte WebGL (pression GPU, veille, onglet en arrière-plan) ---
+     Sans preventDefault, le navigateur ne tente jamais de restaurer le contexte
+     et le canvas reste figé jusqu'au rechargement de la page. */
+  const canvasEl = renderer.domElement;
+  function onContextLost(e) {
+    e.preventDefault();
+    stop();
+    if (hooks.onLost) hooks.onLost();
+  }
+  function onContextRestored() {
+    if (hooks.onRestored) hooks.onRestored();
+  }
+  canvasEl.addEventListener('webglcontextlost', onContextLost, false);
+  canvasEl.addEventListener('webglcontextrestored', onContextRestored, false);
 
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(CREAM);
@@ -310,6 +336,7 @@ function initViewer(root) {
     const src = btn.dataset.src;
     makePanelTexture(src).then(tex => {
       applyMotif(tex);
+      lastMotifSrc = src;
       motifBtns.forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
     }).catch(() => { /* image manquante : on garde le motif courant */ });
   }
@@ -317,11 +344,13 @@ function initViewer(root) {
     btn.addEventListener('click', () => selectMotif(btn));
   });
 
-  /* --- Chargement initial : motif par défaut (1er bouton) --- */
-  const firstBtn = motifBtns[0];
-  makePanelTexture(firstBtn.dataset.src).then(tex => {
+  /* --- Chargement initial : motif retenu, sinon 1er bouton --- */
+  const initialBtn =
+    motifBtns.find(b => b.dataset.src === lastMotifSrc) || motifBtns[0];
+  makePanelTexture(initialBtn.dataset.src).then(tex => {
     applyMotif(tex);
-    firstBtn.setAttribute('aria-pressed', 'true');
+    lastMotifSrc = initialBtn.dataset.src;
+    motifBtns.forEach(b => b.setAttribute('aria-pressed', String(b === initialBtn)));
     window.__gcReady = true;
     if (loading) loading.hidden = true;
     renderer.render(scene, camera);
@@ -346,6 +375,8 @@ function initViewer(root) {
     stop();
     ro.disconnect();
     runObserver.disconnect();
+    canvasEl.removeEventListener('webglcontextlost', onContextLost);
+    canvasEl.removeEventListener('webglcontextrestored', onContextRestored);
     controls.dispose();
     scene.traverse(obj => {
       if (obj.geometry) obj.geometry.dispose();
@@ -354,14 +385,17 @@ function initViewer(root) {
         mats.forEach(m => { if (m.map) m.map.dispose(); m.dispose(); });
       }
     });
+    // Le cache est global : le vider, sinon un remontage réutiliserait des
+    // textures détruites (liées au contexte WebGL perdu).
     textureCache.forEach(t => t.dispose());
     textureCache.clear();
-    renderer.dispose();
-    if (renderer.domElement.parentNode) {
-      renderer.domElement.parentNode.removeChild(renderer.domElement);
-    }
+    // Sur contexte perdu, ces appels peuvent lever : le démontage doit aboutir.
+    try { renderer.dispose(); } catch (e) { /* contexte déjà mort */ }
+    if (canvasEl.parentNode) canvasEl.parentNode.removeChild(canvasEl);
+    window.__gcReady = false;
   }
-  window.addEventListener('pagehide', dispose, { once: true });
+
+  return { dispose, webgl: true };
 }
 
 /* ============================================================
@@ -370,17 +404,57 @@ function initViewer(root) {
 function boot() {
   const root = document.getElementById('gcViewer');
   if (!root) return;
-  let started = false;
+
+  const reloadBtn = root.querySelector('#gcReload');
+  let instance = null;
+  let mounted  = false;
+
+  const showReload = (show) => { if (reloadBtn) reloadBtn.hidden = !show; };
+
+  function unmount() {
+    if (instance) {
+      try { instance.dispose(); } catch (e) { /* démontage best-effort */ }
+      instance = null;
+    }
+    mounted = false;
+  }
+
+  function mount() {
+    if (mounted) return;
+    mounted = true;
+    showReload(false);
+    instance = initViewer(root, {
+      // Contexte perdu : on propose le remontage manuel si le navigateur
+      // ne restaure pas de lui-même.
+      onLost: () => showReload(true),
+      onRestored: () => remount(),
+    });
+  }
+
+  function remount() { unmount(); mount(); }
+
+  if (reloadBtn) reloadBtn.addEventListener('click', remount);
+
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => {
-      if (e.isIntersecting && !started) {
-        started = true;
+      if (e.isIntersecting && !mounted) {
         io.disconnect();
-        initViewer(root);
+        mount();
       }
     });
   }, { rootMargin: '200px 0px' });
   io.observe(root);
+
+  /* --- bfcache ---
+     pagehide.persisted = la page est mise en cache (bouton Précédent), pas
+     déchargée : la détruire la laisserait vide au retour, sans moyen de la
+     relancer. On ne libère que sur un vrai déchargement. Au retour, si le
+     canvas a disparu malgré tout, on remonte. */
+  window.addEventListener('pagehide', (e) => { if (!e.persisted) unmount(); });
+  window.addEventListener('pageshow', (e) => {
+    if (!e.persisted) return;
+    if (mounted && !root.querySelector('.gc-canvas')) remount();
+  });
 }
 
 if (document.readyState !== 'loading') boot();
