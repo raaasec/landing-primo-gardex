@@ -5,7 +5,7 @@
    - Construit un garde-corps simple : base béton + montants +
      main courante + panneaux de remplissage ajourés (motifs).
    - Rotation souris / doigt (OrbitControls), zoom limité, pas de pan.
-   - Les 3 motifs (dossier Motifs/) sont traités dans un <canvas> :
+   - Les motifs (dossier Motifs/) sont traités dans un <canvas> :
      la tôle devient un anthracite plat (opaque), les trous (blanc)
      deviennent transparents => vraies perforations. Le filigrane,
      posé sur la tôle, disparaît ; sur les trous il est atténué.
@@ -21,6 +21,7 @@ const MOTIFS = [
   { name: 'Atlantide', src: 'Motifs/SPM20033-ATLANTIDE-par-Dampere.jpg' },
   { name: 'Aréthusa',  src: 'Motifs/SPM20045-ARETHUSA-par-Dampere.jpg' },
   { name: 'Lanixit',   src: 'Motifs/SPM20090-LANIXIT-par-Dampere.jpg' },
+  { name: 'Archipel',  src: 'Motifs/ARCHIPEL-par-Dampere.jpg' },
 ];
 
 /* --- Charte --- */
