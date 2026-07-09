@@ -1336,15 +1336,8 @@ section.uf-context {
   padding: clamp(40px, 5vw, 72px) 0;
   position: relative; overflow: hidden;
 }
-/* Motif Primo Gardex en filigrane (arrière-plan, faible opacité) */
-section.uf-context::before {
-  content: ""; position: absolute; top: -8%; left: -6%;
-  width: 42%; height: 116%; z-index: 0; pointer-events: none;
-  background: url("../Motifs/SPM20045-ARETHUSA-par-Dampere.jpg") center / cover no-repeat;
-  opacity: 0.05;
-  -webkit-mask-image: linear-gradient(105deg, #000 8%, transparent 62%);
-          mask-image: linear-gradient(105deg, #000 8%, transparent 62%);
-}
+/* Le filigrane de motif a été déplacé sur la carte « avantage clé »
+   (.tppme-item--accent) : une seule occurrence dans la page. */
 section.uf-context .container { position: relative; z-index: 1; }
 
 /* ===== Contexte compact (bloc .ctx2 : présentation express, 1 écran) ===== */
@@ -2204,6 +2197,25 @@ a:hover { color: var(--gold-deep); }
   background: linear-gradient(150deg, #232323 0%, var(--ink) 100%);
   box-shadow: 0 16px 34px rgba(26, 26, 26, 0.22);
 }
+
+/* Filigrane : motif Archipel (Dampere) en fond de la carte. Unique dans la page.
+   « screen » n'éclaircit que les ajours (blancs) du motif : la tôle sombre du JPG
+   se fond dans le noir de la carte. On obtient les perforations, pas un carré gris.
+   Le masque concentre le motif en bas à droite, à l'écart du badge et du chiffre.
+   .tppme-item a déjà overflow:hidden -> le motif épouse les coins arrondis. */
+.tppme-item--accent::before {
+  content: ""; position: absolute; inset: 0; z-index: 0;
+  pointer-events: none;
+  background: url("../Motifs/ARCHIPEL-par-Dampere.jpg") center / 150% no-repeat;
+  opacity: 0.22;   /* mesuré : le fond n'éclaircit pas au-delà de #3f3f3f,
+                      le texte blanc reste à ~10:1 (seuil AA : 4.5:1) */
+  mix-blend-mode: screen;
+  -webkit-mask-image: radial-gradient(125% 105% at 100% 100%, #000 0%, transparent 68%);
+          mask-image: radial-gradient(125% 105% at 100% 100%, #000 0%, transparent 68%);
+}
+/* Le contenu repasse au-dessus du filigrane. */
+.tppme-item--accent > * { position: relative; z-index: 1; }
+
 .tppme-item--accent .tppme-figure-num,
 .tppme-item--accent .tppme-figure-unit { color: var(--gold-bright); }
 .tppme-item--accent .tppme-item-badge { background: rgba(228, 165, 45, 0.20); color: var(--gold-bright); }
