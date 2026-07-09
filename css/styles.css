@@ -1821,8 +1821,9 @@ section.uf-patterns { background: var(--bg-card); }
   display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
   max-width: 980px; margin: 0 auto;
 }
-/* Palier intermédiaire : 2×2 plutôt que 4 cartes écrasées. */
-@media (max-width: 1000px) { .uf-renders-grid { grid-template-columns: repeat(2, 1fr); max-width: 640px; } }
+/* Pas de palier 2×2 : la section fait un écran (section-screen + scroll-snap),
+   deux rangées de cartes la feraient déborder. Les 4 colonnes se resserrent
+   jusqu'à 768px, où la règle mobile bascule la grille en slider horizontal. */
 @media (max-width: 680px) { .uf-renders-grid { grid-template-columns: 1fr; max-width: 320px; } }
 .uf-render-card {
   background: var(--bg-card); border: 1px solid var(--line-soft);
