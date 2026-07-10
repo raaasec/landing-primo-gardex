@@ -603,7 +603,7 @@ section.dual-angles {
   display: flex; align-items: center; gap: 14px; margin-bottom: 12px;
 }
 .tppme-item-title {
-  font-family: var(--serif); font-size: 17px; font-weight: 700;
+  font-family: var(--sans); font-size: 17px; font-weight: 700;
   color: var(--ink); line-height: 1.25; letter-spacing: -0.01em;
   margin: 0; text-wrap: balance;
 }
@@ -684,7 +684,7 @@ section.dual-angles {
   color: var(--accent); margin-bottom: 12px;
 }
 .motifs-header h3 {
-  font-family: var(--serif); font-weight: 700;
+  font-family: var(--sans); font-weight: 700;
   font-size: clamp(22px, 2.6vw, 30px); line-height: 1.15;
   color: var(--ink); letter-spacing: -0.015em; margin-bottom: 8px;
 }
@@ -863,7 +863,7 @@ section.realisations {
   letter-spacing: 0.16em; color: rgba(255, 255, 255, 0.78); margin-bottom: 8px;
 }
 .real-card-title {
-  font-family: var(--serif); font-weight: 700;
+  font-family: var(--sans); font-weight: 700;
   font-size: 22px; line-height: 1.15;
   color: var(--paper); letter-spacing: -0.01em; text-wrap: balance;
 }
@@ -950,7 +950,7 @@ section.benefits { padding: 120px 0; background: var(--bg-card); }
   padding: 56px; gap: 60px; align-items: center; min-height: 320px;
 }
 .benefit-featured-text h3 {
-  font-family: var(--serif); font-weight: 700;
+  font-family: var(--sans); font-weight: 700;
   font-size: 34px; line-height: 1.1; color: var(--ink);
   margin-bottom: 16px; letter-spacing: -0.015em;
 }
@@ -979,7 +979,7 @@ section.benefits { padding: 120px 0; background: var(--bg-card); }
   color: var(--accent); font-weight: 700; margin-bottom: 14px;
 }
 .catalogue-mockup-title {
-  font-family: var(--serif); font-size: 22px;
+  font-family: var(--sans); font-size: 22px;
   line-height: 1.1; color: var(--ink); margin-bottom: 10px;
 }
 .catalogue-mockup-sub { font-size: 9px; color: var(--secondary); letter-spacing: 0.05em; margin-top: auto; }
@@ -1071,7 +1071,7 @@ section.process { background: var(--bg-soft); }
   color: var(--accent); margin-bottom: 12px;
 }
 .cond-card h3 {
-  font-family: var(--serif); font-weight: 700; font-size: clamp(19px, 1.5vw, 23px);
+  font-family: var(--sans); font-weight: 700; font-size: clamp(19px, 1.5vw, 23px);
   line-height: 1.15; color: var(--ink); letter-spacing: -0.01em; margin-bottom: 9px;
 }
 .cond-card p { font-size: 13.5px; line-height: 1.5; color: var(--text); margin-bottom: 15px; }
@@ -1215,7 +1215,7 @@ section.process { background: var(--bg-soft); }
   color: var(--accent); margin-bottom: 22px;
 }
 .step-card h3 {
-  font-family: var(--serif); font-size: clamp(26px, 3.2vw, 40px);
+  font-family: var(--sans); font-size: clamp(26px, 3.2vw, 40px);
   font-weight: 700; line-height: 1.08; color: var(--ink);
   letter-spacing: -0.02em; margin-bottom: 18px; max-width: 460px; text-wrap: balance;
 }
@@ -1475,7 +1475,7 @@ section.uf-context .container { position: relative; z-index: 1; }
   text-transform: uppercase; color: var(--ink); background: var(--gold);
   padding: 4px 10px; border-radius: var(--r-pill);
 }
-.ctx2-caption-title { font-family: var(--serif); font-size: 16px; font-weight: 600; line-height: 1.3; }
+.ctx2-caption-title { font-family: var(--sans); font-size: 16px; font-weight: 600; line-height: 1.3; }
 @media (max-width: 860px) {
   .ctx2 { grid-template-columns: 1fr; gap: 24px; }
   .ctx2-visual { order: -1; }
@@ -1579,7 +1579,7 @@ section.uf-context .container { position: relative; z-index: 1; }
   box-shadow: 0 4px 10px rgba(196, 136, 27, 0.28);
 }
 .uf-eq-sub {
-  font-family: var(--serif); font-style: normal;
+  font-family: var(--sans); font-style: normal;
   font-size: clamp(16px, 1.8vw, 19px); color: var(--brand-700);
   margin: 0 0 18px; position: relative; z-index: 1;
 }
@@ -1647,7 +1647,7 @@ section.uf-context .container { position: relative; z-index: 1; }
   stroke-linecap: round; stroke-linejoin: round;
 }
 .uf-pillar-title {
-  font-family: var(--serif); font-weight: 700; font-size: 21px;
+  font-family: var(--sans); font-weight: 700; font-size: 21px;
   color: var(--ink); letter-spacing: -0.01em; margin-bottom: 10px;
 }
 .uf-pillar-body { font-size: 14.5px; line-height: 1.6; color: var(--text); }
@@ -1680,7 +1680,7 @@ section.uf-context .container { position: relative; z-index: 1; }
 }
 .uf-security-text { position: relative; z-index: 1; }
 .uf-security-text h3 {
-  font-family: var(--serif); font-weight: 700; font-size: clamp(20px, 2.4vw, 26px);
+  font-family: var(--sans); font-weight: 700; font-size: clamp(20px, 2.4vw, 26px);
   color: var(--ink); letter-spacing: -0.01em; margin-bottom: 10px; line-height: 1.2;
 }
 .uf-security-text p { font-size: 15px; line-height: 1.65; color: var(--ink-700); max-width: 760px; }
@@ -1963,7 +1963,7 @@ section.uf-timeline { background: var(--bg-page); padding: clamp(64px, 8vw, 110p
   color: var(--accent); margin-bottom: 8px;
 }
 .uf-timeline-title {
-  font-family: var(--serif); font-weight: 700; font-size: 19px;
+  font-family: var(--sans); font-weight: 700; font-size: 19px;
   color: var(--ink); letter-spacing: -0.01em; margin-bottom: 8px; line-height: 1.2;
 }
 .uf-timeline-text { font-size: 14px; line-height: 1.55; color: var(--text); }
