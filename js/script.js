@@ -219,16 +219,10 @@ flipCards.forEach(card => {
   const nav = document.querySelector('.site-nav');
   if (!nav) return;
 
-  /* --- La hauteur réelle de la barre alimente --nav-h --- */
-  function syncNavHeight() {
-    document.documentElement.style.setProperty('--nav-h', nav.offsetHeight + 'px');
-  }
-  if ('ResizeObserver' in window) {
-    new ResizeObserver(syncNavHeight).observe(nav);
-  } else {
-    window.addEventListener('resize', syncNavHeight);
-  }
-  syncNavHeight();
+  /* --- --nav-h vient des tokens CSS (64px desktop / 56px mobile). On ne le
+     pilote plus depuis offsetHeight : la barre se compacte visuellement au
+     scroll (logo), et lier --nav-h à cette variation provoquerait un reflow
+     des sections. Le token reste donc stable. --- */
 
   /* --- Ombre discrète dès qu'on a quitté le haut de page --- */
   const onScroll = () => nav.classList.toggle('is-scrolled', window.scrollY > 8);
@@ -254,27 +248,58 @@ flipCards.forEach(card => {
     document.querySelectorAll('section[id]').forEach(s => spy.observe(s));
   }
 
-  /* --- Menu mobile (hamburger) --- */
+  /* --- Menu mobile : overlay plein écran, focus piégé, arrière-plan inert --- */
   const toggle = nav.querySelector('.nav-toggle');
+  const brand  = nav.querySelector('.nav-brand');
   const isOpen = () => nav.classList.contains('is-open');
+
+  // Éléments focusables de la nav (ordre DOM = ordre de tabulation)
+  const focusables = () => [brand, toggle, ...links].filter(Boolean);
+  // Contenu de page à neutraliser quand le menu est ouvert (tout sauf la nav)
+  const bgEls = Array.prototype.filter.call(
+    document.body.children,
+    el => el !== nav && el.tagName !== 'SCRIPT'
+  );
+  let lastFocus = null;
+
   function setOpen(open) {
+    if (open === isOpen()) return;
     nav.classList.toggle('is-open', open);
     toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     toggle.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
     document.body.classList.toggle('nav-locked', open);
+    // Arrière-plan neutralisé pour le clavier, la souris et les lecteurs d'écran
+    bgEls.forEach(el => { open ? el.setAttribute('inert', '') : el.removeAttribute('inert'); });
+
+    if (open) {
+      lastFocus = document.activeElement;
+      requestAnimationFrame(() => (links[0] || toggle).focus());
+    } else if (lastFocus) {
+      lastFocus.focus(); lastFocus = null;
+    }
   }
+
   toggle.addEventListener('click', () => setOpen(!isOpen()));
-  // Clic sur un lien : on ferme avant que le navigateur défile vers l'ancre
+  // Clic sur un lien ou sur le logo : on ferme avant le défilement vers l'ancre
   links.forEach(l => l.addEventListener('click', () => setOpen(false)));
-  // Clic hors de la barre
-  document.addEventListener('click', e => {
-    if (isOpen() && !nav.contains(e.target)) setOpen(false);
-  });
-  // Échap : fermeture + focus rendu au bouton
+  brand.addEventListener('click', () => setOpen(false));
+
+  // Échap : fermeture (le focus revient au déclencheur via setOpen → lastFocus)
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && isOpen()) { setOpen(false); toggle.focus(); }
+    if (e.key === 'Escape' && isOpen()) setOpen(false);
   });
-  // Retour en desktop : on déverrouille tout
+
+  // Piège de focus : Tab/Shift+Tab bouclent à l'intérieur de la nav
+  nav.addEventListener('keydown', e => {
+    if (e.key !== 'Tab' || !isOpen()) return;
+    const f = focusables();
+    if (!f.length) return;
+    const first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+
+  // Retour en desktop (passage ≥ 769px) : on referme et on déverrouille tout
   const desktop = window.matchMedia('(min-width: 769px)');
   const onDesktop = () => { if (desktop.matches) setOpen(false); };
   if (desktop.addEventListener) desktop.addEventListener('change', onDesktop);

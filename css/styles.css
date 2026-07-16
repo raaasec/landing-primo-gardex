@@ -2572,7 +2572,10 @@ a:hover { color: var(--gold-deep); }
   min-height: var(--nav-h);
   display: flex; align-items: center; justify-content: space-between;
   gap: 16px;
-  padding-inline: clamp(16px, 4vw, 40px);
+  /* max(..., env()) : sur un appareil à encoche en paysage (nav desktop),
+     les côtés dégagent le notch ; env() = 0 sur un vrai desktop → sans effet. */
+  padding-inline: max(clamp(16px, 4vw, 40px), env(safe-area-inset-left))
+                  max(clamp(16px, 4vw, 40px), env(safe-area-inset-right));
   background: rgba(250, 246, 238, 0.72);              /* crème translucide */
   -webkit-backdrop-filter: blur(14px) saturate(1.2);
   backdrop-filter: blur(14px) saturate(1.2);
@@ -2647,50 +2650,154 @@ a:hover { color: var(--gold-deep); }
 .site-nav.is-open .nav-toggle-bar:nth-child(2) { opacity: 0; }
 .site-nav.is-open .nav-toggle-bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-/* --- Mobile : hamburger + panneau déroulant en verre dépoli --- */
+/* ============================================================
+   NAVBAR MOBILE — refonte premium (≤ 768px)
+   Overlay plein écran en verre dépoli net (fin du bleed-through),
+   cibles ≥ 44px, entrée en cascade, safe-area complet, barre qui
+   se densifie/compacte au scroll. Focus piégé + arrière-plan inert
+   gérés par js/script.js. L'expérience desktop n'est pas touchée.
+   ============================================================ */
 @media (max-width: 768px) {
-  .nav-toggle { display: inline-flex; }
-  .nav-links {
-    position: absolute; top: 100%; left: 0; right: 0;   /* ancré sous la barre */
-    flex-direction: column; align-items: stretch; gap: 0;
-    padding: 8px clamp(16px, 4vw, 40px) 16px;
-    background: rgba(250, 246, 238, 0.88);              /* + opaque : lisibilité du panneau */
+  /* --- Barre : safe-area (encoche en haut, notch en paysage) --- */
+  .site-nav {
+    /* --nav-h = hauteur de contenu (token CSS) ; l'encoche s'ajoute au-dessus.
+       box-sizing:border-box → min-height inclut le padding-top de l'encoche. */
+    padding-top: env(safe-area-inset-top);
+    min-height: calc(var(--nav-h) + env(safe-area-inset-top));
+    padding-left: max(clamp(16px, 4vw, 40px), env(safe-area-inset-left));
+    padding-right: max(clamp(16px, 4vw, 40px), env(safe-area-inset-right));
+    /* IMPORTANT : pas de backdrop-filter directement sur .site-nav en mobile —
+       un filtre y créerait un bloc conteneur qui empêcherait l'overlay
+       (position:fixed) de couvrir tout l'écran. Le verre passe donc sur ::before. */
+    background: transparent;
+    -webkit-backdrop-filter: none; backdrop-filter: none;
+    transition: box-shadow .3s ease;
+  }
+  .site-nav::before {
+    content: ""; position: absolute; inset: 0; z-index: 0;
+    background: rgba(250, 246, 238, 0.72);
     -webkit-backdrop-filter: blur(14px) saturate(1.2);
     backdrop-filter: blur(14px) saturate(1.2);
     border-bottom: 1px solid rgba(26, 26, 26, 0.08);
-    box-shadow: 0 18px 40px rgba(26, 26, 26, .12);
-    max-height: calc(100svh - var(--nav-h)); overflow-y: auto;
+    transition: background .3s ease, opacity .3s ease,
+                -webkit-backdrop-filter .3s ease, backdrop-filter .3s ease;
+  }
+  /* Logo et bouton au-dessus de l'overlay (enfant en z-index 1) et du verre (0) */
+  .nav-brand, .nav-toggle { position: relative; z-index: 2; }
+  .nav-brand img { transition: height .3s cubic-bezier(.22, 1, .36, 1); }
+  .nav-toggle { display: inline-flex; }
+
+  /* Compaction + lisibilité au scroll (aucun reflow : --nav-h reste un token,
+     et le snap est désactivé en mobile). */
+  .site-nav.is-scrolled:not(.is-open) { box-shadow: 0 4px 20px rgba(26, 26, 26, .1); }
+  .site-nav.is-scrolled:not(.is-open)::before {
+    background: rgba(250, 246, 238, 0.9);
+    -webkit-backdrop-filter: blur(18px) saturate(1.4);
+    backdrop-filter: blur(18px) saturate(1.4);
+  }
+  .site-nav.is-scrolled:not(.is-open) .nav-brand img { height: 26px; }
+  /* Menu ouvert : le verre de la barre s'efface, elle se fond dans l'overlay */
+  .site-nav.is-open::before { opacity: 0; }
+
+  /* --- Overlay plein écran --- */
+  .nav-links {
+    position: fixed; inset: 0; z-index: 1;   /* sous le logo/X (z-index 2) */
+    flex-direction: column; align-items: stretch; gap: 0; margin: 0;
+    padding:
+      calc(var(--nav-h) + env(safe-area-inset-top) + 20px)
+      max(24px, env(safe-area-inset-right))
+      calc(24px + env(safe-area-inset-bottom))
+      max(24px, env(safe-area-inset-left));
+    background: rgba(250, 246, 238, 0.86);
+    -webkit-backdrop-filter: blur(28px) saturate(1.5);
+    backdrop-filter: blur(28px) saturate(1.5);
+    overscroll-behavior: contain; overflow-y: auto;
+    /* état fermé */
     opacity: 0; visibility: hidden; pointer-events: none;
-    transform: translateY(-8px);
-    transition: opacity .22s ease, transform .22s ease, visibility 0s linear .22s;
+    transform: scale(1.015);
+    transition: opacity .28s ease, transform .28s ease, visibility 0s linear .28s;
+  }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .nav-links { background: rgba(250, 246, 238, 0.98); }
   }
   .site-nav.is-open .nav-links {
-    opacity: 1; visibility: visible; pointer-events: auto;
-    transform: none; transition-delay: 0s;
+    opacity: 1; visibility: visible; pointer-events: auto; transform: none;
+    transition: opacity .36s cubic-bezier(.22, 1, .36, 1),
+                transform .4s cubic-bezier(.22, 1, .36, 1);
+    will-change: transform, opacity;
   }
+  /* Barre transparente quand le menu est ouvert : elle se fond dans l'overlay */
+  .site-nav.is-open {
+    background: transparent; box-shadow: none; border-bottom-color: transparent;
+    -webkit-backdrop-filter: none; backdrop-filter: none;
+  }
+
+  /* Le dernier item (CTA « Rejoindre ») est poussé en bas, zone du pouce */
+  .nav-links li:last-child { margin-top: auto; }
+
+  /* --- Liens : grandes cibles, typo éditoriale, entrée en cascade --- */
   .nav-link {
-    width: 100%; min-height: 48px; padding: 10px 4px;
-    font-size: 16px; border-bottom: 1px solid rgba(26, 26, 26, 0.06);
+    width: 100%; min-height: 60px; padding: 12px 6px;
+    font-family: var(--font-display);
+    font-size: clamp(22px, 6.2vw, 30px); font-weight: 500;
+    letter-spacing: -0.01em; line-height: 1.1;
+    color: var(--ink-800); opacity: 1;
+    border-bottom: 1px solid rgba(26, 26, 26, 0.07);
+    transform: translateY(16px);
+    transition: transform .3s cubic-bezier(.22, 1, .36, 1), opacity .3s ease;
   }
-  .nav-links li:last-child .nav-link { border-bottom: 0; }
-  /* Indicateur : petit trait à gauche du lien actif (le soulignement
-     pleine largeur serait confondu avec les séparateurs) */
-  .nav-link::after {
-    left: 0; right: auto; width: 18px;
-    bottom: auto; top: 50%; margin-top: -1px;
+  .site-nav.is-open .nav-link { transform: none; }
+  /* Cascade — présente uniquement à l'ouverture ; la fermeture est instantanée */
+  .site-nav:not(.is-open) .nav-link { opacity: 0; }
+  .site-nav.is-open .nav-links li:nth-child(1) .nav-link { transition-delay: .05s; }
+  .site-nav.is-open .nav-links li:nth-child(2) .nav-link { transition-delay: .09s; }
+  .site-nav.is-open .nav-links li:nth-child(3) .nav-link { transition-delay: .13s; }
+  .site-nav.is-open .nav-links li:nth-child(4) .nav-link { transition-delay: .17s; }
+  .site-nav.is-open .nav-links li:nth-child(5) .nav-link { transition-delay: .21s; }
+  .site-nav.is-open .nav-links li:nth-child(6) .nav-link { transition-delay: .25s; }
+  .site-nav.is-open .nav-links li:nth-child(7) .nav-link { transition-delay: .29s; }
+
+  /* Indicateur actif : pastille or à gauche (remplace le soulignement desktop) */
+  .nav-link::after { display: none; }
+  .nav-link.active { font-weight: 700; padding-left: 24px; }
+  .nav-link.active::before {
+    content: ""; position: absolute; left: 2px; top: 50%; transform: translateY(-50%);
+    width: 9px; height: 9px; border-radius: 50%; background: var(--gold);
+    box-shadow: 0 0 0 4px rgba(228, 165, 45, .16);
   }
-  .nav-link.active { padding-left: 28px; }
-  .nav-link--cta { border: 1px solid var(--gold); border-radius: 12px; padding: 10px 16px; margin-top: 8px; }
-  .nav-link--cta.active { padding-left: 16px; }
-  .nav-brand-label { display: none; }                  /* le logo suffit en mobile */
+
+  /* CTA « Rejoindre » : bouton pleine largeur en bas */
+  .nav-link--cta {
+    justify-content: center; text-align: center;
+    min-height: 56px; margin-top: 20px; padding: 14px 20px;
+    border: 1px solid var(--gold); border-radius: 16px;
+    background: rgba(228, 165, 45, .12);
+    font-family: var(--font-text); font-size: 17px; font-weight: 600;
+    letter-spacing: 0; color: var(--ink-800);
+  }
+  .nav-link--cta.active { padding-left: 20px; }
+  .nav-link--cta.active::before { display: none; }
+  .nav-link--cta:active { background: rgba(228, 165, 45, .22); }
+
+  .nav-brand-label { display: none; }   /* le logo suffit en mobile */
+}
+
+/* Paysage téléphone (écran très bas) : liens plus compacts, la liste défile */
+@media (max-width: 768px) and (max-height: 480px) {
+  .nav-links { padding-top: calc(var(--nav-h) + env(safe-area-inset-top) + 10px); }
+  .nav-link { min-height: 48px; font-size: 19px; }
+  .nav-link--cta { min-height: 48px; margin-top: 14px; }
 }
 
 /* Page verrouillée quand le menu mobile est ouvert (posé par le JS) */
 body.nav-locked { overflow: hidden; }
 
-/* Mouvement réduit : pas d'animations sur la nav */
+/* Mouvement réduit : apparition immédiate, sans transform ni cascade */
 @media (prefers-reduced-motion: reduce) {
-  .site-nav, .nav-link, .nav-link::after, .nav-links, .nav-toggle-bar {
-    transition: none;
+  .site-nav, .nav-link, .nav-link::after, .nav-links, .nav-toggle-bar,
+  .nav-brand img {
+    transition: none !important;
   }
+  .nav-link { transform: none !important; }
+  .site-nav.is-open .nav-links li .nav-link { transition-delay: 0s !important; }
 }
