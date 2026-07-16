@@ -2143,7 +2143,15 @@ input:focus-visible, [tabindex]:focus-visible {
      vh est déclaré avant comme repli pour les navigateurs anciens.
    - Contenu centré verticalement (justify-content: center).
    ============================================================ */
-:root { --header-offset: 0px; } /* aucun header fixe actif → 0 ; à ajuster si la DSI en ajoute un */
+/* --nav-h : hauteur de la barre de navigation sticky (.site-nav).
+   Le JS la resynchronise sur la hauteur réelle mesurée (ResizeObserver).
+   --header-offset (utilisé par les min-height et scroll-margin ci-dessous)
+   suit automatiquement. */
+:root { --nav-h: 64px; --header-offset: var(--nav-h); }
+@media (max-width: 768px) { :root { --nav-h: 56px; } }
+
+/* Les ancres (#section) s'arrêtent sous la barre sticky, pas dessous */
+html { scroll-padding-top: var(--nav-h); }
 
 .section-screen {
   display: flex; flex-direction: column; justify-content: center;
@@ -2170,7 +2178,9 @@ input:focus-visible, [tabindex]:focus-visible {
    snapper une section qu'on ne peut pas voir d'un coup rend le scroll pénible. */
 @media (min-width: 900px) {
   html { scroll-snap-type: y proximity; }
-  .section-snap { scroll-snap-align: start; scroll-margin-top: var(--header-offset); }
+  /* Pas de scroll-margin-top ici : le scroll-padding-top de html (= --nav-h)
+     gère déjà le décalage sous la barre — les deux s'additionneraient. */
+  .section-snap { scroll-snap-align: start; }
   .section-tall { scroll-snap-align: none; }
 }
 
@@ -2180,7 +2190,10 @@ input:focus-visible, [tabindex]:focus-visible {
    ============================================================ */
 @media (max-width: 768px) {
   .section-screen { min-height: auto; padding-block: 56px; }
-  .hero.section-screen { min-height: 100vh; min-height: 100svh; }
+  .hero.section-screen {
+    min-height: calc(100vh - var(--nav-h));
+    min-height: calc(100svh - var(--nav-h));
+  }
 }
 
 /* Préférence "mouvement réduit" : pas de scroll animé ni de snap */
@@ -2488,4 +2501,139 @@ a:hover { color: var(--gold-deep); }
 .gc-motif-name, .step-chip {
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum" 1;
+}
+
+/* ============================================================
+   NAV BLUR + SCROLL-SPY
+   Barre sticky en verre dépoli (crème translucide + blur),
+   indicateur or animé sous le lien actif, hamburger + panneau
+   déroulant sur mobile. Le scroll-spy (classe .active) est posé
+   par js/script.js via IntersectionObserver.
+   ============================================================ */
+.site-nav {
+  position: sticky; top: 0; z-index: 100;
+  min-height: var(--nav-h);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px;
+  padding-inline: clamp(16px, 4vw, 40px);
+  background: rgba(250, 246, 238, 0.72);              /* crème translucide */
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  backdrop-filter: blur(14px) saturate(1.2);
+  border-bottom: 1px solid rgba(26, 26, 26, 0.08);
+  transition: box-shadow .25s ease, background .25s ease;
+}
+/* Repli : fond opaque si backdrop-filter n'est pas supporté */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .site-nav, .site-nav .nav-links { background: var(--cream); }
+}
+.site-nav.is-scrolled { box-shadow: 0 6px 24px rgba(26, 26, 26, .08); }
+
+/* --- Marque (logo → retour en haut) --- */
+.nav-brand {
+  display: inline-flex; align-items: center; gap: 10px;
+  min-height: 44px; text-decoration: none; flex-shrink: 0;
+}
+.nav-brand img { height: 30px; width: auto; display: block; }
+.nav-brand-label {
+  font-family: var(--font-text); font-size: 12px; font-weight: 600;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--ink-800); white-space: nowrap;
+}
+
+/* --- Liens --- */
+.nav-links {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; align-items: center; gap: clamp(6px, 1.4vw, 22px);
+}
+.nav-link {
+  position: relative; padding: 8px 4px;
+  min-height: 44px; display: inline-flex; align-items: center;
+  color: var(--ink-800); text-decoration: none;
+  font-size: 15px; opacity: .7; white-space: nowrap;
+  transition: opacity .2s ease, color .2s ease;
+}
+.nav-link:hover { opacity: 1; }
+.nav-link::after {                                    /* indicateur or animé */
+  content: ""; position: absolute; left: 4px; right: 4px; bottom: 6px; height: 2px;
+  background: var(--gold); border-radius: 2px;
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .28s cubic-bezier(.16, 1, .3, 1);
+}
+.nav-link.active { opacity: 1; font-weight: 600; }
+.nav-link.active::after { transform: scaleX(1); }
+.nav-link:focus-visible { outline: 2px solid var(--ink-800); outline-offset: 3px; border-radius: 6px; }
+
+/* Lien « Rejoindre » : pastille bordée d'or (accent, texte near-black) */
+.nav-link--cta {
+  border: 1px solid var(--gold); border-radius: 999px;
+  padding: 8px 16px; opacity: 1; font-weight: 600;
+  transition: background .2s ease, opacity .2s ease;
+}
+.nav-link--cta:hover { background: rgba(228, 165, 45, .14); }
+.nav-link--cta::after { display: none; }              /* pas de soulignement sur la pastille */
+.nav-link--cta.active { background: rgba(228, 165, 45, .18); }
+
+/* --- Hamburger (caché en desktop) --- */
+.nav-toggle {
+  display: none;
+  width: 44px; height: 44px;
+  flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+  background: none; border: 0; border-radius: 8px;
+  cursor: pointer; flex-shrink: 0;
+}
+.nav-toggle:focus-visible { outline: 2px solid var(--ink-800); outline-offset: 2px; }
+.nav-toggle-bar {
+  width: 20px; height: 2px; background: var(--ink-800); border-radius: 2px;
+  transition: transform .25s ease, opacity .2s ease;
+}
+.site-nav.is-open .nav-toggle-bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.site-nav.is-open .nav-toggle-bar:nth-child(2) { opacity: 0; }
+.site-nav.is-open .nav-toggle-bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* --- Mobile : hamburger + panneau déroulant en verre dépoli --- */
+@media (max-width: 768px) {
+  .nav-toggle { display: inline-flex; }
+  .nav-links {
+    position: absolute; top: 100%; left: 0; right: 0;   /* ancré sous la barre */
+    flex-direction: column; align-items: stretch; gap: 0;
+    padding: 8px clamp(16px, 4vw, 40px) 16px;
+    background: rgba(250, 246, 238, 0.88);              /* + opaque : lisibilité du panneau */
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    backdrop-filter: blur(14px) saturate(1.2);
+    border-bottom: 1px solid rgba(26, 26, 26, 0.08);
+    box-shadow: 0 18px 40px rgba(26, 26, 26, .12);
+    max-height: calc(100svh - var(--nav-h)); overflow-y: auto;
+    opacity: 0; visibility: hidden; pointer-events: none;
+    transform: translateY(-8px);
+    transition: opacity .22s ease, transform .22s ease, visibility 0s linear .22s;
+  }
+  .site-nav.is-open .nav-links {
+    opacity: 1; visibility: visible; pointer-events: auto;
+    transform: none; transition-delay: 0s;
+  }
+  .nav-link {
+    width: 100%; min-height: 48px; padding: 10px 4px;
+    font-size: 16px; border-bottom: 1px solid rgba(26, 26, 26, 0.06);
+  }
+  .nav-links li:last-child .nav-link { border-bottom: 0; }
+  /* Indicateur : petit trait à gauche du lien actif (le soulignement
+     pleine largeur serait confondu avec les séparateurs) */
+  .nav-link::after {
+    left: 0; right: auto; width: 18px;
+    bottom: auto; top: 50%; margin-top: -1px;
+  }
+  .nav-link.active { padding-left: 28px; }
+  .nav-link--cta { border: 1px solid var(--gold); border-radius: 12px; padding: 10px 16px; margin-top: 8px; }
+  .nav-link--cta.active { padding-left: 16px; }
+  .nav-brand-label { display: none; }                  /* le logo suffit en mobile */
+}
+
+/* Page verrouillée quand le menu mobile est ouvert (posé par le JS) */
+body.nav-locked { overflow: hidden; }
+
+/* Mouvement réduit : pas d'animations sur la nav */
+@media (prefers-reduced-motion: reduce) {
+  .site-nav, .nav-link, .nav-link::after, .nav-links, .nav-toggle-bar {
+    transition: none;
+  }
 }

@@ -25,8 +25,38 @@
      ============================================================ -->
 <div id="dsi-topbar"></div>
 
+<!-- ============================================================
+     NAVIGATION DE LA PAGE — sticky, verre dépoli, scroll-spy
+     Distincte du header DSI ci-dessus (zone laissée intacte).
+     Le lien actif est géré par js/script.js (IntersectionObserver).
+     ============================================================ -->
+<nav class="site-nav" aria-label="Navigation de la page">
+  <a class="nav-brand" href="#accueil">
+    <img src="images/logo-primo-gardex-clean.png" alt="Primo Gardex — retour en haut de page">
+    <span class="nav-brand-label">Cercle Partenaire</span>
+  </a>
+
+  <!-- Hamburger (mobile uniquement, masqué en desktop par le CSS) -->
+  <button type="button" class="nav-toggle" aria-expanded="false"
+          aria-controls="navLinks" aria-label="Ouvrir le menu">
+    <span class="nav-toggle-bar" aria-hidden="true"></span>
+    <span class="nav-toggle-bar" aria-hidden="true"></span>
+    <span class="nav-toggle-bar" aria-hidden="true"></span>
+  </button>
+
+  <ul class="nav-links" id="navLinks">
+    <li><a class="nav-link" href="#avantages">Avantages</a></li>
+    <li><a class="nav-link" href="#sur-mesure">Vue 3D</a></li>
+    <li><a class="nav-link" href="#motifs">Motifs</a></li>
+    <li><a class="nav-link" href="#delais">Délais</a></li>
+    <li><a class="nav-link" href="#realisations">Réalisations</a></li>
+    <li><a class="nav-link" href="#conditions">Conditions</a></li>
+    <li><a class="nav-link nav-link--cta" href="#activer">Rejoindre</a></li>
+  </ul>
+</nav>
+
 <!-- ============== HERO ============== -->
-<section class="hero section-screen section-snap">
+<section class="hero section-screen section-snap" id="accueil">
   <div class="hero-texture" aria-hidden="true"></div>
   <div class="hero-bg-shape"></div>
 
@@ -495,7 +525,7 @@
 </section>
 
 <!-- ============== RÉALISATIONS (mosaïque) ============== -->
-<section class="realisations section-screen section-snap" id="realisations">
+<section class="realisations section-screen section-tall section-snap" id="realisations">
   <div class="container">
     <div class="realisations-head reveal">
       <div>
@@ -669,7 +699,7 @@
       <span class="brand-logo">
         <img src="images/logo-primo-gardex-clean.png" alt="Primo Gardex"
              height="26"
-             onerror="this.onerror=null;this.outerHTML='<span style=&quot;color:#fff&quot;>Primo Gardex</span>’">
+             onerror="this.onerror=null;this.outerHTML='<span style=&quot;color:#fff&quot;>Primo Gardex</span>'">
       </span>
       Cercle Partenaire
     </span>

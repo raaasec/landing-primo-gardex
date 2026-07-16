@@ -207,3 +207,76 @@ flipCards.forEach(card => {
     setActive(0);
   });
 })();
+
+/* ===== Barre de navigation — hauteur, ombre, scroll-spy, menu mobile =====
+   - --nav-h suit la hauteur réelle de la barre (ResizeObserver) : le
+     scroll-padding et les min-height des sections restent justes.
+   - Scroll-spy : IntersectionObserver, « actif » = section au centre de
+     l'écran (bande -45%/-45%). Pas de calcul dans l'événement scroll.
+   - Menu mobile : Échap, clic extérieur, clic sur un lien → fermeture ;
+     scroll de la page verrouillé tant que le panneau est ouvert. */
+(function () {
+  const nav = document.querySelector('.site-nav');
+  if (!nav) return;
+
+  /* --- La hauteur réelle de la barre alimente --nav-h --- */
+  function syncNavHeight() {
+    document.documentElement.style.setProperty('--nav-h', nav.offsetHeight + 'px');
+  }
+  if ('ResizeObserver' in window) {
+    new ResizeObserver(syncNavHeight).observe(nav);
+  } else {
+    window.addEventListener('resize', syncNavHeight);
+  }
+  syncNavHeight();
+
+  /* --- Ombre discrète dès qu'on a quitté le haut de page --- */
+  const onScroll = () => nav.classList.toggle('is-scrolled', window.scrollY > 8);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* --- Scroll-spy --- */
+  const links = Array.prototype.slice.call(nav.querySelectorAll('.nav-link'));
+  const linkFor = id => links.find(l => l.getAttribute('href') === '#' + id);
+  function clearActive() {
+    links.forEach(l => { l.classList.remove('active'); l.removeAttribute('aria-current'); });
+  }
+  if ('IntersectionObserver' in window) {
+    const spy = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        // Sections sans lien (hero, sections narratives) : aucun lien actif.
+        clearActive();
+        const link = linkFor(e.target.id);
+        if (link) { link.classList.add('active'); link.setAttribute('aria-current', 'true'); }
+      });
+    }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
+    document.querySelectorAll('section[id]').forEach(s => spy.observe(s));
+  }
+
+  /* --- Menu mobile (hamburger) --- */
+  const toggle = nav.querySelector('.nav-toggle');
+  const isOpen = () => nav.classList.contains('is-open');
+  function setOpen(open) {
+    nav.classList.toggle('is-open', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    toggle.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
+    document.body.classList.toggle('nav-locked', open);
+  }
+  toggle.addEventListener('click', () => setOpen(!isOpen()));
+  // Clic sur un lien : on ferme avant que le navigateur défile vers l'ancre
+  links.forEach(l => l.addEventListener('click', () => setOpen(false)));
+  // Clic hors de la barre
+  document.addEventListener('click', e => {
+    if (isOpen() && !nav.contains(e.target)) setOpen(false);
+  });
+  // Échap : fermeture + focus rendu au bouton
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && isOpen()) { setOpen(false); toggle.focus(); }
+  });
+  // Retour en desktop : on déverrouille tout
+  const desktop = window.matchMedia('(min-width: 769px)');
+  const onDesktop = () => { if (desktop.matches) setOpen(false); };
+  if (desktop.addEventListener) desktop.addEventListener('change', onDesktop);
+  else if (desktop.addListener) desktop.addListener(onDesktop);
+})();
