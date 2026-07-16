@@ -2726,8 +2726,13 @@ a:hover { color: var(--gold-deep); }
                 transform .4s cubic-bezier(.22, 1, .36, 1);
     will-change: transform, opacity;
   }
-  /* Barre transparente quand le menu est ouvert : elle se fond dans l'overlay */
+  /* Barre transparente quand le menu est ouvert : elle se fond dans l'overlay.
+     position: fixed (et non plus sticky) : le verrou de scroll
+     (body { overflow: hidden }) casse le sticky et renverrait la barre — donc
+     le logo et la croix — en haut du document, hors écran quand on est
+     scrollé plus bas. En fixed, logo + croix restent toujours accessibles. */
   .site-nav.is-open {
+    position: fixed; top: 0; left: 0; right: 0;
     background: transparent; box-shadow: none; border-bottom-color: transparent;
     -webkit-backdrop-filter: none; backdrop-filter: none;
   }
